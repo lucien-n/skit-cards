@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"genTypes": "supabase gen types typescript --project-id cbysxhcibneuvrjsujhi > ./src/lib/types/database-generated.types.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -26,15 +27,23 @@
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
+		"sveltekit-superforms": "^1.7.2",
 		"tailwindcss": "^3.3.2",
 		"tslib": "^2.4.1",
+		"type-fest": "^4.3.1",
 		"typescript": "^5.0.0",
-		"vite": "^4.4.2"
+		"vite": "^4.4.2",
+		"zod": "^3.22.2"
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/auth-helpers-sveltekit": "^0.10.3",
+		"@supabase/supabase-js": "^2.36.0",
+		"bits-ui": "^0.5.7",
 		"clsx": "^2.0.0",
+		"formsnap": "^0.1.3",
 		"lucide-svelte": "^0.279.0",
+		"supabase": "^1.99.5",
 		"tailwind-merge": "^1.14.0",
 		"tailwind-variants": "^0.1.14"
 	}
