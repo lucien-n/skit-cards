@@ -6,7 +6,7 @@
 	import { Separator } from '$components/ui/separator';
 
 	export let session: Session | null;
-	export let profile: TProfile | null;
+	export let profile: TPublicProfile | null;
 </script>
 
 <div class="border-b p-3 shadow-md sticky">
@@ -23,13 +23,6 @@
 		</div>
 		<div class="flex items-center space-x-1 md:space-x-2">
 			{#if session && profile}
-				<NavLink href="/new">
-					<svelte:fragment slot="icon">
-						<PlusIcon />
-					</svelte:fragment>
-					<span class="hidden md:flex">New</span>
-				</NavLink>
-				<Separator orientation="vertical" />
 				<NavUserDropdown {profile} />
 			{:else}
 				<NavLink href="/auth">

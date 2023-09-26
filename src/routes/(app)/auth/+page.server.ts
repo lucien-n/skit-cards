@@ -1,8 +1,8 @@
+import { AuthApiError } from '@supabase/supabase-js';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
+import type { Actions, PageServerLoad } from './$types';
 import { signinSchema, signupSchema } from './schema';
-import type { PageServerLoad, Actions } from './$types';
-import { AuthApiError } from '@supabase/supabase-js';
 
 export const load: PageServerLoad = async ({ locals: { getSession } }) => {
 	const session = await getSession();

@@ -30,13 +30,12 @@ export const cfetch = async (
 		};
 	}
 
-	if (res.bodyUsed)
-		try {
-			const { data, error } = await res.json();
-			return { data, error, status: res.status, statusText: res.statusText };
-		} catch (e) {
-			/* empty */
-		}
+	try {
+		const { data, error } = await res.json();
+		return { data, error, status: res.status, statusText: res.statusText };
+	} catch (e) {
+		/* empty */
+	}
 
 	return { data: [], error: '', status: res.status, statusText: res.statusText };
 };

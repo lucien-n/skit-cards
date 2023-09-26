@@ -2,7 +2,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { LogOutIcon, UserIcon } from 'lucide-svelte';
 
-	export let profile: TProfile;
+	export let profile: TPublicProfile;
 </script>
 
 <DropdownMenu.Root>
