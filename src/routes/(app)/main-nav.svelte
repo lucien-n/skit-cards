@@ -9,8 +9,6 @@
 	export let profile: TPublicProfile | null;
 
 	const profileHrefPattern = /^\/profile\/[A-z]+$/;
-
-	$: console.log(profileHrefPattern.test($page.url.href.replace($page.url.origin, '')));
 </script>
 
 <div class="sticky top-4">
