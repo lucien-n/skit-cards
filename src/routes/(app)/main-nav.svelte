@@ -1,17 +1,16 @@
 <script lang="ts">
 	import type { Session } from '@supabase/supabase-js';
-	import { HomeIcon, LogInIcon, PlusIcon } from 'lucide-svelte';
+	import { HomeIcon, LogInIcon } from 'lucide-svelte';
 	import NavLink from './nav-link.svelte';
 	import NavUserDropdown from './nav-user-dropdown.svelte';
-	import { Separator } from '$components/ui/separator';
 
 	export let session: Session | null;
 	export let profile: TPublicProfile | null;
 </script>
 
-<div class="border-b p-3 shadow-md sticky">
+<div class="sticky top-4">
 	<nav
-		class="flex items-center w-full lg:w-[80%] xl:w-[70%] 3xl:w-[60%] mx-auto md:space-x-6 text-lg font-medium justify-between"
+		class="flex items-center w-full lg:w-[80%] xl:w-[70%] 3xl:w-[60%] p-3 rounded-md shadow-md bg-background border mx-auto md:space-x-6 text-lg font-medium justify-between"
 	>
 		<div class="flex items-center">
 			<NavLink href="/">

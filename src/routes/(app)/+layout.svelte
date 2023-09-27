@@ -6,6 +6,7 @@
 	import MainNav from './main-nav.svelte';
 	import { navigating } from '$app/stores';
 	import Loading from './loading.svelte';
+	import Card from '$components/ui/card/card.svelte';
 
 	export let data;
 
@@ -32,6 +33,6 @@
 {/if}
 
 <MainNav {session} {profile} />
-<main class="container h-full flex flex-col gap-y-2 overflow-hidden">
+<main class="container h-full flex flex-col justify-center items-center gap-y-2 overflow-hidden">
 	<slot />
 </main>
