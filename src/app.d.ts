@@ -1,3 +1,4 @@
+import type { Collection } from '$lib/types/collection.type';
 import type { Database } from '$lib/types/database.types';
 import type { Flashcard } from '$lib/types/flashcard.type';
 import type { Profile, PublicProfile } from '$lib/types/profile.type';
@@ -7,6 +8,8 @@ declare global {
 	type TProfile = Profile;
 	type TPublicProfile = PublicProfile;
 	type TFlashcard = Flashcard;
+
+	type TCollection = Collection;
 
 	type TSupaProfile = Tables<'profiles'>;
 	type TSupaFlashcard = Tables<'cards'>;

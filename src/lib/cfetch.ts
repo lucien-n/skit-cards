@@ -30,12 +30,13 @@ export const cfetch = async (
 		};
 	}
 
-	try {
-		const { data, error } = await res.json();
-		return { data, error, status: res.status, statusText: res.statusText };
-	} catch (e) {
-		/* empty */
-	}
+	if (res.status == 200 || res.status == 201)
+		try {
+			const { data, error } = await res.json();
+			return { data, error, status: res.status, statusText: res.statusText };
+		} catch (e) {
+			/* empty */
+		}
 
 	return { data: [], error: '', status: res.status, statusText: res.statusText };
 };

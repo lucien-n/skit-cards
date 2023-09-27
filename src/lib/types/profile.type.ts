@@ -6,6 +6,6 @@ export type PublicProfile = {
 
 export type Profile = {
 	email: string;
-	created_at: number;
+	created_at: string;
 	updated_at: number;
 } & PublicProfile;
