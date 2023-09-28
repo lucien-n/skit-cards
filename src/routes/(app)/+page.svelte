@@ -27,7 +27,7 @@
 	{#if data}
 		<section class="w-full md:w-3/4 xl:w-2/3 h-4/5 grid grid-cols-4 grid-rows-5">
 			{#each data as collection}
-				<a href="/collection/{collection.name}">
+				<a href="/collection/{collection.uid}">
 					<Collection {collection} />
 				</a>
 			{/each}

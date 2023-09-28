@@ -12,21 +12,21 @@ export interface Database {
       cards: {
         Row: {
           answer: string
-          collection: string | null
+          collection: string
           created_at: string
           question: string
           uid: string
         }
         Insert: {
           answer: string
-          collection?: string | null
+          collection: string
           created_at?: string
           question: string
           uid?: string
         }
         Update: {
           answer?: string
-          collection?: string | null
+          collection?: string
           created_at?: string
           question?: string
           uid?: string
@@ -107,7 +107,19 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_collection_author: {
+        Args: {
+          collection_uid: string
+          author_uid: string
+        }
+        Returns: boolean
+      }
+      is_collection_public: {
+        Args: {
+          collection_uid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

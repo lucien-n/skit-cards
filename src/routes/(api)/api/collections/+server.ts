@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ locals: { supabase, getSession } }) 
 	if (!session) return new Response(null, { status: 401 });
 
 	const query = supabase
-		.from('cards-collections')
+		.from('cards_collections')
 		.select('uid, author, name, is_public, created_at')
 		.match({ author: session.user.id });
 

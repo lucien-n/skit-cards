@@ -1,12 +1,12 @@
 export type Fetch = typeof fetch;
 
-export const cfetch = async (
+export const cfetch = async <T>(
 	url: string,
 	method: 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT',
 	fetch: Fetch,
 	options?: object
 ): Promise<{
-	data: Array<never>;
+	data: T | null;
 	error: string;
 	status: number;
 	statusText: string;
@@ -23,7 +23,7 @@ export const cfetch = async (
 		}
 
 		return {
-			data: [],
+			data: null,
 			error: `[${res.status}] <${method}> '${url}'${error ? ' => ' + error : ''}`,
 			status: res.status,
 			statusText: res.statusText
@@ -38,7 +38,7 @@ export const cfetch = async (
 			/* empty */
 		}
 
-	return { data: [], error: '', status: res.status, statusText: res.statusText };
+	return { data: null, error: '', status: res.status, statusText: res.statusText };
 };
 
 export type CFetch = typeof cfetch;
