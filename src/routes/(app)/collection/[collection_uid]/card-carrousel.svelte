@@ -22,6 +22,7 @@
 	{/key}
 	<Paginator
 		bind:current={currentIndex}
+		showArrows
 		size={cards.length}
 		on:change={({ detail }) => (currentIndex = detail)}
 	/>

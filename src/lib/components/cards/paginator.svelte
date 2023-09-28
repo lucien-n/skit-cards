@@ -15,10 +15,22 @@
 		current = index;
 		dispatch('change', index);
 	};
+
+	const next = () => {
+		if (current + 1 < size) current += 1;
+	};
+
+	const previous = () => {
+		if (current - 1 >= 0) current -= 1;
+	};
 </script>
 
 <div class="relative flex items-center justify-center">
-	<button class="absolute left-0 -translate-x-8" class:hidden={!showArrows || current == 0}>
+	<button
+		class="absolute left-0 -translate-x-8"
+		class:hidden={!showArrows || current == 0}
+		on:click={previous}
+	>
 		<ChevronLeft />
 	</button>
 	<div class="w-full flex gap-2 items-center">
@@ -33,7 +45,11 @@
 			/>
 		{/each}
 	</div>
-	<button class="absolute right-0 translate-x-8" class:hidden={!showArrows || current == size}>
+	<button
+		class="absolute right-0 translate-x-8"
+		class:hidden={!showArrows || current === size - 1}
+		on:click={next}
+	>
 		<ChevronRight />
 	</button>
 </div>
