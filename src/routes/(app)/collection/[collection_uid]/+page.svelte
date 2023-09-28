@@ -37,7 +37,7 @@
 				{#if error}
 					<ErrorAlert {error} />
 				{:else if cards}
-					{#if profile && profile.uid === collection.author}
+					{#if profile && profile.uid === collection.author.uid}
 						<a
 							href={getAddUrl(collection.uid)}
 							class="rounded-md text-lg px-5 py-2 bg-primary text-background">Add</a
