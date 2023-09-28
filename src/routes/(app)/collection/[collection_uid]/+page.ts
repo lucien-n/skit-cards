@@ -1,7 +1,7 @@
 import { cfetch } from '$lib/cfetch';
-import type { LayoutLoad } from './$types';
+import type { PageLoad } from './$types';
 
-export const load: LayoutLoad = async ({ params: { collection_uid }, fetch }) => {
+export const load: PageLoad = async ({ fetch, params: { collection_uid } }) => {
 	const collectionPromise = cfetch<TCollection>(`/api/collections/${collection_uid}`, 'GET', fetch);
 	const cardsPromise = cfetch<TFlashcard[]>(
 		`/api/collections/${collection_uid}/cards`,

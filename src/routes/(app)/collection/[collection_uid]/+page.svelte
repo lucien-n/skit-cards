@@ -31,6 +31,7 @@
 								<p class="text-right font-semibold">{k}:</p>
 								<p class="col-span-2">{v}</p>
 							{/each}
+							<a href="/collection/{collection.uid}/edit/{card.uid}">Edit</a>
 						</div>
 					{/each}
 				{:else}

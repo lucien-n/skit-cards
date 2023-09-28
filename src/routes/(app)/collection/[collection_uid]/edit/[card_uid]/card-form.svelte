@@ -22,7 +22,7 @@
 	};
 </script>
 
-<Form.Root {form} schema={cardSchema} let:config debug>
+<Form.Root {form} schema={cardSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit} class="flex flex-col gap-2">
 		<Form.Field {config} name="question">
 			<Form.Item>

@@ -4,9 +4,26 @@ import { superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
 import { cardSchema } from './card_schema';
 
-export const load: PageServerLoad = async ({ params: { card_uid } }) => {
+export const load: PageServerLoad = async ({
+	fetch,
+	params: { collection_uid, card_uid },
+	url: { origin }
+}) => {
+	const form = await superValidate(cardSchema);
+
+	if (card_uid.length === 36) {
+		const url = new URL(`${origin}/api/collections/${collection_uid}/cards`);
+		url.searchParams.set('uid', card_uid);
+		const { data } = await cfetch<TFlashcard>(url.href, 'GET', fetch);
+
+		if (data) {
+			form.data.question = data.question;
+			form.data.answer = data.answer;
+		}
+	}
+
 	return {
-		form: superValidate(cardSchema),
+		form,
 		mode: card_uid === 'new' ? 'new' : 'edit'
 	};
 };
@@ -36,7 +53,7 @@ export const actions: Actions = {
 
 		const { error, status } = await cfetch<null>(
 			`/api/collections/${collection_uid}/cards`,
-			card_uid ? 'PUT' : 'POST',
+			uid ? 'PUT' : 'POST',
 			fetch,
 			{
 				body: JSON.stringify({ question, answer, uid }),
@@ -55,6 +72,7 @@ export const actions: Actions = {
 			});
 
 		return {
+			status,
 			form
 		};
 	}

@@ -1,12 +1,12 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ params: { uid }, locals: { supabase } }) => {
-	if (!uid || uid.length !== 36) return new Response(null, { status: 422 });
+export const GET: RequestHandler = async ({ params: { collection_uid }, locals: { supabase } }) => {
+	if (!collection_uid || collection_uid.length !== 36) return new Response(null, { status: 422 });
 
 	const query = supabase
 		.from('cards_collections')
 		.select('uid, author, name, is_public, created_at')
-		.match({ uid });
+		.match({ uid: collection_uid });
 
 	const { data, error, status }: DbResult<typeof query> = await query;
 
