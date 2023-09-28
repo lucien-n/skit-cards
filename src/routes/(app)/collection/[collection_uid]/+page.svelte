@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import ErrorAlert from '$components/cards/error-alert.svelte';
 	import { setTitle } from '$lib/helper';
 	import type { PageData } from './$types';
@@ -12,6 +13,12 @@
 	} = data;
 
 	setTitle('Collection');
+
+	const getAddUrl = (collection: string) => {
+		const addUrl = new URL(`${$page.url.origin}/collection/${collection}/edit/new`);
+		addUrl.searchParams.set('callback_url', $page.url.href);
+		return addUrl.href;
+	};
 </script>
 
 <section class="w-full h-full flex items-center justify-center flex-col relative gap-3">
@@ -32,7 +39,7 @@
 				{:else if cards}
 					{#if profile && profile.uid === collection.author}
 						<a
-							href="/collection/{collection.uid}/edit/new"
+							href={getAddUrl(collection.uid)}
 							class="rounded-md text-lg px-5 py-2 bg-primary text-background">Add</a
 						>
 					{/if}
