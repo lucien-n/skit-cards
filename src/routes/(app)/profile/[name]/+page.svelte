@@ -16,7 +16,7 @@
 			<Loader2 />
 		</span>
 	</div>
-{:then { data: [profile], error }}
+{:then { data: profile, error }}
 	{#if error || !profile}
 		<ErrorAlert error={error || 'Profile not found'} title="Not Found" />
 	{:else}
