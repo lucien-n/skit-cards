@@ -8,9 +8,11 @@
 	export let data: PageData;
 
 	let {
+		session,
 		streamed: { collectionsPromise }
 	} = data;
 	$: ({
+		session,
 		streamed: { collectionsPromise }
 	} = data);
 </script>
@@ -31,11 +33,13 @@
 					<Collection {collection} />
 				</a>
 			{/each}
-			<Card class="card hover-card p-0">
-				<a href="/new" class="w-full h-full flex items-center justify-center">
-					<Plus size={36} />
-				</a>
-			</Card>
+			{#if session}
+				<Card class="card hover-card p-0">
+					<a href="/new" class="w-full h-full flex items-center justify-center">
+						<Plus size={36} />
+					</a>
+				</Card>
+			{/if}
 		</section>
 	{:else}
 		<p>No collections</p>
