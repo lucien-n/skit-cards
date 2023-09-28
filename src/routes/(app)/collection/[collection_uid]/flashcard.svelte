@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$components/ui/button/button.svelte';
 	import { Edit } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -23,7 +24,7 @@
 		>
 			<a
 				class="absolute right-3 top-3"
-				href="/collection/{flashcard.collection}/edit/{flashcard.uid}"
+				href="/collection/{flashcard.collection}/edit/{flashcard.uid}?callback_url={$page.url.href}"
 				on:click|stopPropagation
 			>
 				<Edit />
