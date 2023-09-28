@@ -20,5 +20,5 @@
 </script>
 
 <Card class="card w-full lg:w-2/3 xl:w-1/2">
-	<CardForm {form} {mode} on:success={gotoCallbackUrl} />
+	<CardForm {form} {mode} on:success={gotoCallbackUrl} on:cancel={gotoCallbackUrl} />
 </Card>

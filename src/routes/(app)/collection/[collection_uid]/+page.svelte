@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ErrorAlert from '$components/cards/error-alert.svelte';
-	import Button from '$components/ui/button/button.svelte';
 	import { setTitle } from '$lib/helper';
 	import type { PageData } from './$types';
 	import CardCarrousel from './card-carrousel.svelte';
@@ -8,8 +7,8 @@
 	export let data: PageData;
 
 	const {
-		streamed: { collectionPromise, cardsPromise },
-		profile
+		profile,
+		streamed: { collectionPromise, cardsPromise }
 	} = data;
 
 	setTitle('Collection');
@@ -37,6 +36,7 @@
 							class="rounded-md text-lg px-5 py-2 bg-primary text-background">Add</a
 						>
 					{/if}
+
 					<CardCarrousel {cards} />
 				{:else}
 					<p>

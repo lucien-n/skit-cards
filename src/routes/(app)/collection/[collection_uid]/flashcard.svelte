@@ -11,23 +11,27 @@
 
 	let showAnswer = false;
 
+	const url = new URL(
+		`${$page.url.origin}/collection/${flashcard.collection}/edit/${flashcard.uid}`
+	);
+	url.searchParams.set('callback_url', $page.url.href);
+	url.searchParams.set('question', flashcard.question);
+	url.searchParams.set('answer', flashcard.answer);
+
 	const toggleShowAnswer = () => (showAnswer = !showAnswer);
 </script>
 
 {#key showAnswer}
-	<article class="relative w-full flex flex-col items-center">
+	<article class="relative w-full md:w-2/3 xl:w-1/2 h-[350px] flex flex-col items-center">
+		<a class="absolute right-3 top-3" href={url.href} on:click>
+			<Edit />
+		</a>
 		<button
 			in:fade={{ duration: 150 }}
 			on:click={toggleShowAnswer}
-			class="relative w-full md:w-2/3 xl:w-1/2 h-[350px] card hover-card flex flex-col gap-3"
+			class="w-full h-full card hover-card flex flex-col gap-3"
 			class:border-primary={showAnswer}
 		>
-			<a
-				class="absolute right-3 top-3"
-				href="/collection/{flashcard.collection}/edit/{flashcard.uid}?callback_url={$page.url.href}"
-			>
-				<Edit />
-			</a>
 			<div class="w-full h-full flex items-center justify-center">
 				{#if !showAnswer}
 					<h1 class="text-xl">{flashcard.question}</h1>

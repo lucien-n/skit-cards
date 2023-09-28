@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Paginator from '$components/cards/paginator.svelte';
-	import { fade } from 'svelte/transition';
 	import Flashcard from './flashcard.svelte';
 
 	export let cards: TFlashcard[];

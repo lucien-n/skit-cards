@@ -5,6 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import * as Form from '$components/ui/form';
 	import { enhance } from '$app/forms';
+	import Button from '$components/ui/button/button.svelte';
 
 	export let form: SuperValidated<CardSchema>;
 	export let mode: string = 'new';
@@ -20,6 +21,8 @@
 			dispatch(result.type, result);
 		};
 	};
+
+	const cancel = () => dispatch('cancel');
 </script>
 
 <Form.Root {form} schema={cardSchema} let:config>
@@ -53,14 +56,17 @@
 			</Form.Item>
 		</Form.Field>
 
-		<Form.Button disabled={loading} class="pt-2"
-			>{mode === 'edit'
-				? loading
-					? 'Saving'
-					: 'Save'
-				: loading
-				? 'Creating'
-				: 'Create'}</Form.Button
-		>
+		<div class="flex w-full gap-3">
+			<Form.Button disabled={loading} class="pt-2 w-full"
+				>{mode === 'edit'
+					? loading
+						? 'Saving'
+						: 'Save'
+					: loading
+					? 'Creating'
+					: 'Create'}</Form.Button
+			>
+			<Button type="button" on:click={cancel}>Cancel</Button>
+		</div>
 	</form>
 </Form.Root>
