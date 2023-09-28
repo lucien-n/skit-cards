@@ -4,7 +4,7 @@ export const cfetch = async <T>(
 	url: string,
 	method: 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT',
 	fetch: Fetch,
-	options?: object
+	options?: RequestInit
 ): Promise<{
 	data: T | null;
 	error: string;
