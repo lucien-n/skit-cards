@@ -4,6 +4,7 @@
 	import { Plus } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import Collection from './collection.svelte';
+	import { setTitle } from '$lib/helper';
 
 	export let data: PageData;
 
@@ -15,6 +16,8 @@
 		session,
 		streamed: { collectionsPromise }
 	} = data);
+
+	setTitle('Home');
 </script>
 
 {#await collectionsPromise}

@@ -1,13 +1,16 @@
 <script lang="ts">
+	import ErrorAlert from '$components/cards/error-alert.svelte';
+	import { setTitle } from '$lib/helper';
 	import { Loader2 } from 'lucide-svelte';
 	import type { PageServerData } from './$types';
-	import ErrorAlert from '$components/cards/error-alert.svelte';
 
 	export let data: PageServerData;
 
 	const {
 		streamed: { profilePromise }
 	} = data;
+
+	setTitle('Profile');
 </script>
 
 {#await profilePromise}

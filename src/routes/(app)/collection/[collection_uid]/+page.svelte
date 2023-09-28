@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ErrorAlert from '$components/cards/error-alert.svelte';
 	import Button from '$components/ui/button/button.svelte';
+	import { setTitle } from '$lib/helper';
 	import type { PageData } from './$types';
 	import CardCarrousel from './card-carrousel.svelte';
 
@@ -10,6 +11,8 @@
 		streamed: { collectionPromise, cardsPromise },
 		profile
 	} = data;
+
+	setTitle('Collection');
 </script>
 
 <section class="w-full h-full flex items-center justify-center flex-col relative gap-3">

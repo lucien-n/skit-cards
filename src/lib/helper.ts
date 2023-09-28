@@ -1,7 +1,7 @@
 import { PREFIX } from './constants';
-import { titleStore } from './stores';
+import titleStore from '$lib/stores/title';
 
-export const setTitle = (title: string, prefix: boolean = false) => {
-	if (prefix) titleStore.set(`${PREFIX} - ${title}`);
-	titleStore.set(title);
+export const setTitle = (title: string, prefix: boolean = true) => {
+	if (prefix) titleStore.set(`${PREFIX} | ${title}`);
+	else titleStore.set(title);
 };
