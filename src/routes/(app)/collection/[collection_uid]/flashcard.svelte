@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$components/ui/button/button.svelte';
+	import { Edit } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 
@@ -17,9 +18,16 @@
 		<button
 			in:fade={{ duration: 150 }}
 			on:click={toggleShowAnswer}
-			class="w-full md:w-2/3 xl:w-1/2 h-[350px] card hover-card flex flex-col gap-3"
+			class="relative w-full md:w-2/3 xl:w-1/2 h-[350px] card hover-card flex flex-col gap-3"
 			class:border-primary={showAnswer}
 		>
+			<a
+				class="absolute right-3 top-3"
+				href="/collection/{flashcard.collection}/edit/{flashcard.uid}"
+				on:click|stopPropagation
+			>
+				<Edit />
+			</a>
 			<div class="w-full h-full flex items-center justify-center">
 				{#if !showAnswer}
 					<h1 class="text-xl">{flashcard.question}</h1>
