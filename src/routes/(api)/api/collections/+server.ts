@@ -47,7 +47,7 @@ export const GET: RequestHandler = async ({
 		});
 	}
 
-	return new Response(null, { status });
+	return new Response(JSON.stringify({ data: collections }), { status });
 };
 
 export const POST: RequestHandler = async ({ request, locals: { supabase, getSession } }) => {
