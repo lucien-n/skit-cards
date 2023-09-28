@@ -25,7 +25,6 @@
 			<a
 				class="absolute right-3 top-3"
 				href="/collection/{flashcard.collection}/edit/{flashcard.uid}?callback_url={$page.url.href}"
-				on:click|stopPropagation
 			>
 				<Edit />
 			</a>
