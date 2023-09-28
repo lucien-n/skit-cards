@@ -9,8 +9,6 @@
 
 	export let form: SuperValidated<CollectionSchema>;
 
-	$: console.log(form);
-
 	const dispatch = createEventDispatcher();
 
 	let loading: boolean = false;
@@ -28,7 +26,7 @@
 
 <ErrorAlert {error} />
 
-<Form.Root schema={collectionSchema} {form} let:config debug>
+<Form.Root {form} schema={collectionSchema} let:config>
 	<form
 		method="POST"
 		action="?/create-collection"
@@ -52,7 +50,7 @@
 		<Form.Field {config} name="is_public">
 			<Form.Item class="flex flex-col">
 				<Form.Label>Public</Form.Label>
-				<Form.Switch required />
+				<Form.Switch required checked={true} />
 				<Form.Description
 					>If public, others will only be able to <strong>view</strong> this collection</Form.Description
 				>

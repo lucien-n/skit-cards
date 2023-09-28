@@ -26,7 +26,7 @@ export const actions: Actions = {
 		}
 
 		const session = await getSession();
-		if (!session) return fail(401, { error: 'You must be signed in' });
+		if (!session) return fail(401, { error: 'You must be signed in', form });
 
 		const name = form.data.name;
 		const is_public = form.data.is_public;
@@ -42,18 +42,22 @@ export const actions: Actions = {
 
 		if (error)
 			fail(status, {
-				error
+				error,
+				form
 			});
 
 		if (status === 422)
 			return fail(422, {
-				error: "Server couldn't process this collection"
+				error: "Server couldn't process this collection",
+				form
 			});
 
-		if (!uid) return fail(status, { error: 'Error during collection creation. Try again later' });
+		if (!uid)
+			return fail(status, { error: 'Error during collection creation. Try again later', form });
 
 		return {
-			uid
+			uid,
+			form
 		};
 	}
 };
