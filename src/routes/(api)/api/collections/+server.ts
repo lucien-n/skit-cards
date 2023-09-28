@@ -29,7 +29,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 	if (!session) return new Response(null, { status: 401 });
 
 	const query = supabase
-		.from('cards-collections')
+		.from('cards_collections')
 		.insert({ author: session.user.id, name, is_public })
 		.select('uid');
 
@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	const uid = data[0].uid;
+	const { uid } = data[0].uid;
 
 	return new Response(JSON.stringify({ data: uid }), { status });
 };
