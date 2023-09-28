@@ -35,7 +35,7 @@ export const actions: Actions = {
 			data: uid,
 			error,
 			status
-		} = await cfetch(`/api/collections`, 'POST', fetch, {
+		} = await cfetch<string>(`/api/collections`, 'POST', fetch, {
 			body: JSON.stringify({ name, is_public }),
 			headers: { 'Content-Type': 'application/json' }
 		});
