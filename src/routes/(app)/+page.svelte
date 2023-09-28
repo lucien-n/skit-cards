@@ -1,19 +1,22 @@
 <script lang="ts">
 	import ErrorAlert from '$components/cards/error-alert.svelte';
+	import * as Dialog from '$components/ui/dialog';
+	import { Plus } from 'lucide-svelte';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import Collection from './collection.svelte';
+	import type { CollectionSchema } from './collection_schema';
+	import CreateCollectionForm from './create-collection-form.svelte';
+	import { Card } from '$components/ui/card';
 
 	export let data: PageData;
+	export let form: SuperValidated<CollectionSchema>;
 
 	let {
-		streamed: { collectionsPromise },
-		session,
-		profile
+		streamed: { collectionsPromise }
 	} = data;
 	$: ({
-		streamed: { collectionsPromise },
-		session,
-		profile
+		streamed: { collectionsPromise }
 	} = data);
 </script>
 
@@ -25,12 +28,22 @@
 	{/if}
 
 	{#if data}
-		<section class="w-full md:w-3/4 xl:w-2/3 h-4/5 grid grid-cols-4 grid-rows-5">
+		<section class="w-full md:w-3/4 xl:w-2/3 h-4/5 grid grid-cols-4 grid-rows-5 gap-3">
 			{#each data as collection}
 				<a href="/collection/{collection.uid}">
 					<Collection {collection} />
 				</a>
 			{/each}
+			<Card>
+				<Dialog.Root>
+					<Dialog.Trigger class="w-full h-full flex items-center justify-center">
+						<Plus size="36" />
+					</Dialog.Trigger>
+					<Dialog.Content>
+						<CreateCollectionForm {form} />
+					</Dialog.Content>
+				</Dialog.Root>
+			</Card>
 		</section>
 	{:else}
 		<p>No collections</p>

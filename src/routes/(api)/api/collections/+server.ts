@@ -21,15 +21,8 @@ export const GET: RequestHandler = async ({ locals: { supabase, getSession } }) 
 	return new Response(null, { status });
 };
 
-export const POST: RequestHandler = async ({
-	request: { body, bodyUsed, json },
-	locals: { supabase, getSession }
-}) => {
-	if (!bodyUsed || !body) return new Response(null, { status: 422 });
-
-	const { name, is_public } = await json();
-
-	console.log(name, is_public);
+export const POST: RequestHandler = async ({ request, locals: { supabase, getSession } }) => {
+	const { name, is_public } = await request.json();
 
 	const session = await getSession();
 
@@ -47,8 +40,6 @@ export const POST: RequestHandler = async ({
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
 	const uid = data[0].uid;
-
-	console.log('new collection:', uid);
 
 	return new Response(JSON.stringify({ data: uid }), { status });
 };

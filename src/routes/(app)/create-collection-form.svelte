@@ -5,25 +5,36 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { collectionSchema, type CollectionSchema } from './collection_schema';
+	import ErrorAlert from '$components/cards/error-alert.svelte';
 
 	export let form: SuperValidated<CollectionSchema>;
+
+	$: console.log(form);
 
 	const dispatch = createEventDispatcher();
 
 	let loading: boolean = false;
-	let created: boolean = false;
+	let error: string = '';
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
 		return async ({ result }) => {
 			loading = false;
+			if (result.type === 'failure') error = result.data?.error;
 			dispatch(result.type, result);
 		};
 	};
 </script>
 
-<Form.Root schema={collectionSchema} {form} let:config>
-	<form method="POST" use:enhance={handleSubmit} class="flex flex-col gap-2">
+<ErrorAlert {error} />
+
+<Form.Root schema={collectionSchema} {form} let:config debug>
+	<form
+		method="POST"
+		action="?/create-collection"
+		use:enhance={handleSubmit}
+		class="flex flex-col gap-2"
+	>
 		<Form.Field {config} name="name">
 			<Form.Item>
 				<Form.Label>Name</Form.Label>
@@ -39,10 +50,12 @@
 			</Form.Item>
 		</Form.Field>
 		<Form.Field {config} name="is_public">
-			<Form.Item>
+			<Form.Item class="flex flex-col">
 				<Form.Label>Public</Form.Label>
 				<Form.Switch required />
-				<Form.Description />
+				<Form.Description
+					>If public, others will only be able to <strong>view</strong> this collection</Form.Description
+				>
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>

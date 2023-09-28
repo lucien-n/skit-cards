@@ -31,17 +31,26 @@ export const actions: Actions = {
 		const name = form.data.name;
 		const is_public = form.data.is_public;
 
-		const { data: uid, error } = await cfetch(`/api/collections`, 'POST', fetch, {
+		const {
+			data: uid,
+			error,
+			status
+		} = await cfetch(`/api/collections`, 'POST', fetch, {
 			body: JSON.stringify({ name, is_public }),
 			headers: { 'Content-Type': 'application/json' }
 		});
 
 		if (error)
-			return fail(500, {
+			fail(status, {
 				error
 			});
 
-		if (!uid) return fail(500, { error: 'Error during collection creation. Try again later' });
+		if (status === 422)
+			return fail(422, {
+				error: "Server couldn't process this collection"
+			});
+
+		if (!uid) return fail(status, { error: 'Error during collection creation. Try again later' });
 
 		return {
 			uid
