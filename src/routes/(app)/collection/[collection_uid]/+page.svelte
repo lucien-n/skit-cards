@@ -48,7 +48,7 @@
 				{:else}
 					<p>
 						No cards in collection. <a
-							href="/collection/{collection.uid}/edit/new"
+							href={getAddUrl(collection.uid)}
 							class="font-semibold hover:underline">Start editing</a
 						>
 					</p>
