@@ -3,7 +3,7 @@ import { cfetch } from '$lib/cfetch';
 import profileStore from '$lib/stores/profile';
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit';
 
-export const load = async ({ fetch, data, depends }) => {
+export const load = async ({ fetch, data, depends, url: { pathname } }) => {
 	depends('supabase:auth');
 
 	const supabase = createSupabaseLoadClient({
@@ -24,5 +24,5 @@ export const load = async ({ fetch, data, depends }) => {
 	}
 	profileStore.set(profile);
 
-	return { supabase, session, profile };
+	return { supabase, session, profile, url: pathname };
 };

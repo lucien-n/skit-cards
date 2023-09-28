@@ -1,17 +1,17 @@
 <script lang="ts">
-	import '../../app.postcss';
 	import { invalidate } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import titleStore from '$lib/stores/title';
-	import MainNav from './main-nav.svelte';
 	import { navigating } from '$app/stores';
+	import titleStore from '$lib/stores/title';
+	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import '../../app.postcss';
 	import Loading from './loading.svelte';
-	import Card from '$components/ui/card/card.svelte';
+	import MainNav from './main-nav.svelte';
 
 	export let data;
 
-	let { supabase, session, profile } = data;
-	$: ({ supabase, session, profile } = data);
+	let { supabase, session, profile, url } = data;
+	$: ({ supabase, session, profile, url } = data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, _session) => {
@@ -33,6 +33,11 @@
 {/if}
 
 <MainNav {session} {profile} />
-<main class="container h-full flex flex-col justify-center items-center gap-y-2 overflow-hidden">
-	<slot />
-</main>
+{#key url}
+	<main
+		class="container h-full flex flex-col justify-center items-center gap-y-2 overflow-hidden"
+		transition:fade={{ duration: 200 }}
+	>
+		<slot />
+	</main>
+{/key}
