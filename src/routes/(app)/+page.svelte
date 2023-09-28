@@ -2,10 +2,10 @@
 	import ErrorAlert from '$components/cards/error-alert.svelte';
 	import Card from '$components/ui/card/card.svelte';
 	import { Plus } from 'lucide-svelte';
-	import type { PageData, PageServerData } from './$types';
+	import type { PageData } from './$types';
 	import Collection from './collection.svelte';
 
-	export let data: PageData & PageServerData;
+	export let data: PageData;
 
 	let {
 		streamed: { collectionsPromise }

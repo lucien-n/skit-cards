@@ -33,7 +33,8 @@ export const cfetch = async <T>(
 	if (res.status == 200 || res.status == 201)
 		try {
 			const { data, error } = await res.json();
-			return { data, error, status: res.status, statusText: res.statusText };
+			const typedData = data as T;
+			return { data: typedData, error, status: res.status, statusText: res.statusText };
 		} catch (e) {
 			/* empty */
 		}
