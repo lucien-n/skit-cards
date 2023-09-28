@@ -50,7 +50,7 @@
 		<Form.Field {config} name="is_public">
 			<Form.Item class="flex flex-col">
 				<Form.Label>Public</Form.Label>
-				<Form.Switch required checked={true} />
+				<Form.Switch required />
 				<Form.Description
 					>If public, others will only be able to <strong>view</strong> this collection</Form.Description
 				>
