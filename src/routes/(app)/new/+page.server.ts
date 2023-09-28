@@ -42,18 +42,15 @@ export const actions: Actions = {
 
 		if (error)
 			fail(status, {
-				error,
-				form
+				error
 			});
 
 		if (status === 422)
 			return fail(422, {
-				error: "Server couldn't process this collection",
-				form
+				error: "Server couldn't process this collection"
 			});
 
-		if (!uid)
-			return fail(status, { error: 'Error during collection creation. Try again later', form });
+		if (!uid) return fail(status, { error: 'Error during collection creation. Try again later' });
 
 		return {
 			uid,
