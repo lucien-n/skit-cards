@@ -34,7 +34,12 @@
 						</div>
 					{/each}
 				{:else}
-					<p>No cards in collection</p>
+					<p>
+						No cards in collection. <a
+							href="/collection/{collection.uid}/edit/new"
+							class="font-semibold hover:underline">Start editing</a
+						>
+					</p>
 				{/if}
 			{/await}
 		{:else}
