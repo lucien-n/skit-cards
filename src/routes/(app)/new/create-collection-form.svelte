@@ -38,7 +38,7 @@
 				<Form.Label>Name</Form.Label>
 				<Form.Input
 					type="text"
-					placeholder="Europ Capitals"
+					placeholder="Capitals of Europe"
 					minlength={3}
 					maxlength={80}
 					required
