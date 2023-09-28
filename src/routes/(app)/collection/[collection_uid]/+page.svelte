@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ErrorAlert from '$components/cards/error-alert.svelte';
 	import type { PageData } from './$types';
+	import CardCarrousel from './card-carrousel.svelte';
 
 	export let data: PageData;
 
@@ -9,14 +10,14 @@
 	} = data;
 </script>
 
-<section>
+<section class="w-full h-full flex items-center justify-center flex-col relative">
 	{#await collectionPromise}
 		<p>Fetching collection</p>
 	{:then { data: collection, error }}
 		{#if error}
 			<ErrorAlert {error} />
 		{:else if collection}
-			<h1 class="text-center text-lg">
+			<h1 class="text-center text-4xl font-semibold absolute top-20">
 				{collection.name}
 			</h1>
 			{#await cardsPromise}
@@ -25,15 +26,7 @@
 				{#if error}
 					<ErrorAlert {error} />
 				{:else if cards}
-					{#each cards as card}
-						<div class="grid grid-cols-3 gap-1">
-							{#each Object.entries(card) as [k, v]}
-								<p class="text-right font-semibold">{k}:</p>
-								<p class="col-span-2">{v}</p>
-							{/each}
-							<a href="/collection/{collection.uid}/edit/{card.uid}">Edit</a>
-						</div>
-					{/each}
+					<CardCarrousel {cards} />
 				{:else}
 					<p>
 						No cards in collection. <a
