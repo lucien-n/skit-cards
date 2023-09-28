@@ -23,7 +23,7 @@ export const GET: RequestHandler = async ({
 
 	const query = supabase
 		.from('cards_collections')
-		.select('uid, author, name, is_public, author_data:profiles(author_name:name), created_at')
+		.select('uid, name, is_public, author:profiles(name:name, uid:uid), created_at')
 		.match(match)
 		.range(offset, limit + offset);
 
@@ -39,10 +39,12 @@ export const GET: RequestHandler = async ({
 		collections.push({
 			...collectionData,
 			author: {
-				uid: collectionData.author,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				name: collectionData.author_data.name
+				uid: collectionData.author.uid,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				name: collectionData.author.name
 			}
 		});
 	}
