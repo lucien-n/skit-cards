@@ -19,8 +19,12 @@ export const load = async ({ fetch, data, depends, url: { pathname } }) => {
 
 	let profile: TPublicProfile | null = null;
 	if (session) {
-		const { data, error } = await cfetch(`/api/users/${session?.user.id}/profile`, 'GET', fetch);
-		if (data || !error) profile = data[0];
+		const { data, error } = await cfetch<TPublicProfile>(
+			`/api/users/${session?.user.id}/profile`,
+			'GET',
+			fetch
+		);
+		if (data || !error) profile = data;
 	}
 	profileStore.set(profile);
 

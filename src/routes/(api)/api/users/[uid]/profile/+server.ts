@@ -28,5 +28,5 @@ export const GET: RequestHandler = async ({ params, locals: { supabase } }) => {
 		avatar_url: profile_data.avatar_url || ''
 	} satisfies TPublicProfile;
 
-	return new Response(JSON.stringify({ data: [profile] }), { status: 200 });
+	return new Response(JSON.stringify({ data: profile }), { status: 200 });
 };
