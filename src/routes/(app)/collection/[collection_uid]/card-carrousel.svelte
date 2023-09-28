@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Paginator from '$components/cards/paginator.svelte';
+	import { fade } from 'svelte/transition';
 	import Flashcard from './flashcard.svelte';
 
 	export let cards: TFlashcard[];
@@ -8,7 +9,7 @@
 	let carrouselEnd: boolean = false;
 
 	const nextCard = () => {
-		if (currentIndex + 1 <= cards.length) currentIndex += 1;
+		if (currentIndex + 1 < cards.length) currentIndex += 1;
 		else carrouselEnd = true;
 	};
 
@@ -16,7 +17,9 @@
 </script>
 
 <section class="flex flex-col w-full h-fit items-center gap-3">
-	<Flashcard flashcard={getCurrentCard()} on:next={nextCard} />
+	{#key currentIndex}
+		<Flashcard flashcard={getCurrentCard()} on:next={nextCard} />
+	{/key}
 	<Paginator
 		bind:current={currentIndex}
 		size={cards.length}
