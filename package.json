@@ -10,7 +10,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"genTypes": "supabase gen types typescript --project-id cbysxhcibneuvrjsujhi > ./src/lib/types/database-generated.types.ts"
+		"gen:types": "supabase gen types typescript --project-id cbysxhcibneuvrjsujhi > ./src/lib/types/database-generated.types.ts",
+		"gen:data": "node ./supabase/generate_data"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -18,6 +19,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.14",
+		"dotenv": "^16.3.1",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
