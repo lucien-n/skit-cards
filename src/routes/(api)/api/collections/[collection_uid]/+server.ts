@@ -14,8 +14,6 @@ export const GET: RequestHandler = async ({ params: { collection_uid }, locals: 
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	console.log(data);
-
 	if (!data[0].author)
 		return new Response(JSON.stringify({ error: 'Could not find author' }), { status: 404 });
 
