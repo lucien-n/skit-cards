@@ -16,15 +16,11 @@ export const GET: RequestHandler = async ({
 		fetchSingle = true;
 	}
 
-	const id = nanoid();
-
 	const query = supabase
 		.from('cards')
 		.select('uid, collection, question, answer')
 		.match(
-			fetchSingle
-				? { collection: collection_uid, uid: cardUid }
-				: { uid: id, collection: collection_uid }
+			fetchSingle ? { collection: collection_uid, uid: cardUid } : { collection: collection_uid }
 		);
 
 	const { data, error, status }: DbResult<typeof query> = await query;
@@ -96,9 +92,10 @@ export const POST: RequestHandler = async ({
 			{ status: 422 }
 		);
 
+	const id = nanoid();
 	const query = supabase
 		.from('cards')
-		.insert({ collection: collection_uid, question, answer })
+		.insert({ uid: id, collection: collection_uid, question, answer })
 		.select('uid');
 
 	const { data, error, status }: DbResult<typeof query> = await query;
