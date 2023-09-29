@@ -1,5 +1,5 @@
 export const checkUid = (uid?: string): { uid: string; response?: Response } => {
-	if (!uid || uid.length !== 36)
+	if (!uid || uid.length !== 21)
 		return {
 			uid: '',
 			response: new Response(JSON.stringify({ error: ' Please provide a valid uid' }), {

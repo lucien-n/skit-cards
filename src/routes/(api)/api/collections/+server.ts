@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { nanoid } from 'nanoid';
 
 export const GET: RequestHandler = async ({
 	url: { searchParams },
@@ -65,9 +66,11 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 
 	if (exists) return new Response(JSON.stringify({ data: { name } }), { status: 409 });
 
+	const id = nanoid();
+
 	const query = supabase
 		.from('cards_collections')
-		.insert({ author: session.user.id, name, is_public })
+		.insert({ uid: id, author: session.user.id, name, is_public })
 		.select('uid');
 
 	const { data, error, status }: DbResult<typeof query> = await query;

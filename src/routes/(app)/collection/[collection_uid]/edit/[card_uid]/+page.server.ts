@@ -33,7 +33,7 @@ export const actions: Actions = {
 			fetch,
 			params: { collection_uid, card_uid }
 		} = event;
-		if (!collection_uid || collection_uid.length !== 36) return;
+		if (!collection_uid || collection_uid.length !== 21) return;
 
 		const form = await superValidate(event, cardSchema);
 
@@ -48,7 +48,7 @@ export const actions: Actions = {
 
 		let uid = null;
 
-		if (card_uid && card_uid.length === 36) uid = card_uid;
+		if (card_uid && card_uid.length === 21) uid = card_uid;
 
 		const { error, status } = await cfetch<null>(
 			`/api/collections/${collection_uid}/cards`,

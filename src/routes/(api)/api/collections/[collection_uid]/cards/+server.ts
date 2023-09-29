@@ -1,11 +1,12 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { nanoid } from 'nanoid';
 
 export const GET: RequestHandler = async ({
 	url: { searchParams },
 	params: { collection_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 36) return new Response(null, { status: 422 });
+	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
 
 	let fetchSingle = false;
 	let cardUid: string | null = null;
@@ -15,11 +16,15 @@ export const GET: RequestHandler = async ({
 		fetchSingle = true;
 	}
 
+	const id = nanoid();
+
 	const query = supabase
 		.from('cards')
 		.select('uid, collection, question, answer')
 		.match(
-			fetchSingle ? { collection: collection_uid, uid: cardUid } : { collection: collection_uid }
+			fetchSingle
+				? { collection: collection_uid, uid: cardUid }
+				: { uid: id, collection: collection_uid }
 		);
 
 	const { data, error, status }: DbResult<typeof query> = await query;
@@ -43,11 +48,11 @@ export const PUT: RequestHandler = async ({
 	params: { collection_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 36) return new Response(null, { status: 422 });
+	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
 
 	const { question, answer, uid } = await request.json();
 
-	if (!uid || uid.length !== 36)
+	if (!uid || uid.length !== 21)
 		return new Response(JSON.stringify({ error: 'Please provide a valid uid' }), { status: 422 });
 
 	if (!question || question.length < 3 || question.length > 255)
@@ -76,7 +81,7 @@ export const POST: RequestHandler = async ({
 	params: { collection_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 36) return new Response(null, { status: 422 });
+	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
 
 	const { question, answer } = await request.json();
 

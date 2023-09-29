@@ -4,8 +4,8 @@ export const GET: RequestHandler = async ({
 	params: { collection_uid, card_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 36) return new Response(null, { status: 422 });
-	if (!card_uid || card_uid.length !== 36) return new Response(null, { status: 422 });
+	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
+	if (!card_uid || card_uid.length !== 21) return new Response(null, { status: 422 });
 
 	const query = supabase
 		.from('cards')

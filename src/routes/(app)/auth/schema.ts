@@ -4,7 +4,7 @@ export const signupSchema = z.object({
 	name: z
 		.string()
 		.min(2, 'Your name must be atleast 2 characters long')
-		.max(36, 'Your name cannot be greater than 36 character'),
+		.max(21, 'Your name cannot be greater than 21 character'),
 	email: z.string().email('Please enter a valid email'),
 	password: z
 		.string()

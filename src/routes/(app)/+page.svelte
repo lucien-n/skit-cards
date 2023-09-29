@@ -39,7 +39,7 @@
 			{#if session}
 				<Card class="card hover-card p-0">
 					<a href="/new" class="w-full h-full flex items-center justify-center">
-						<Plus size={36} />
+						<Plus size={21} />
 					</a>
 				</Card>
 			{/if}
