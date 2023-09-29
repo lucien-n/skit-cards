@@ -50,6 +50,11 @@ export const actions: Actions = {
 				error: "Server couldn't process this collection"
 			});
 
+		if (status == 409)
+			return fail(409, {
+				error: `A collection with the name ${name} already exists`
+			});
+
 		if (!uid) return fail(status, { error: 'Error during collection creation. Try again later' });
 
 		return {
