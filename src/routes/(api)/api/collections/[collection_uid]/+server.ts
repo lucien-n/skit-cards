@@ -21,10 +21,10 @@ export const GET: RequestHandler = async ({ params: { collection_uid }, locals: 
 				author: {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
-					uid: collectionData.author.uid,
+					uid: data.author.uid,
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
-					name: collectionData.author.name
+					name: data.author.name
 				}
 			}
 		}),
