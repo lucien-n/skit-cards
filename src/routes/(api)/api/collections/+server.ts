@@ -56,8 +56,14 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 	const { name, is_public } = await request.json();
 
 	const session = await getSession();
-
 	if (!session) return new Response(null, { status: 401 });
+
+	const { data: exists } = await supabase.rpc('collection_exists_by_author', {
+		author_uid: session.user.id,
+		collection_name: name
+	});
+
+	if (exists) return new Response(JSON.stringify({ data: { name } }), { status: 409 });
 
 	const query = supabase
 		.from('cards_collections')

@@ -35,12 +35,12 @@ export interface Database {
           {
             foreignKeyName: "cards_collection_fkey"
             columns: ["collection"]
-            referencedRelation: "cards-collections"
+            referencedRelation: "cards_collections"
             referencedColumns: ["uid"]
           }
         ]
       }
-      "cards-collections": {
+      cards_collections: {
         Row: {
           author: string
           created_at: string
@@ -64,7 +64,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "cards-collections_author_fkey"
+            foreignKeyName: "cards_collections_author_fkey"
             columns: ["author"]
             referencedRelation: "profiles"
             referencedColumns: ["uid"]
@@ -107,6 +107,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      collection_exists_by_author: {
+        Args: {
+          collection_name: string
+          author_uid: string
+        }
+        Returns: boolean
+      }
       is_collection_author: {
         Args: {
           collection_uid: string
