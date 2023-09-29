@@ -14,20 +14,18 @@ export const GET: RequestHandler = async ({ params: { collection_uid }, locals: 
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	return new Response(
-		JSON.stringify({
-			data: {
-				...data,
-				author: {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					uid: data.author.uid,
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					name: data.author.name
-				}
-			}
-		}),
-		{ status }
-	);
+	console.log(data);
+
+	if (!data[0].author)
+		return new Response(JSON.stringify({ error: 'Could not find author' }), { status: 404 });
+
+	if ((data[0] as TCollection | null)?.author === null)
+		return new Response(
+			JSON.stringify({
+				data
+			}),
+			{ status }
+		);
+
+	return new Response(null, { status });
 };
