@@ -14,7 +14,6 @@
 	const url = new URL(
 		`${$page.url.origin}/collection/${flashcard.collection}/edit/${flashcard.uid}`
 	);
-	url.searchParams.set('callback_url', $page.url.href);
 	url.searchParams.set('question', flashcard.question);
 	url.searchParams.set('answer', flashcard.answer);
 

@@ -16,7 +16,6 @@
 
 	const getAddUrl = (collection: string) => {
 		const addUrl = new URL(`${$page.url.origin}/collection/${collection}/edit/new`);
-		addUrl.searchParams.set('callback_url', $page.url.href);
 		return addUrl.href;
 	};
 </script>

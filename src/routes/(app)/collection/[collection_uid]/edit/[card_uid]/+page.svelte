@@ -13,12 +13,14 @@
 
 	setTitle(`${mode == 'edit' ? 'Edit' : 'New'}`);
 
-	const gotoCallbackUrl = () => {
-		const callbackUrl = $page.url.searchParams.get('callback_url');
-		if (callbackUrl && browser) goto(callbackUrl);
+	const gotoCollection = () => {
+		const pageUrl = $page.url;
+		const collection = pageUrl.pathname.split('/')[2];
+		const collectionUrl = `${pageUrl.origin}/collection/${collection}`;
+		if (browser) goto(collectionUrl);
 	};
 </script>
 
 <Card class="card w-full lg:w-2/3 xl:w-1/2">
-	<CardForm {form} {mode} on:success={gotoCallbackUrl} on:cancel={gotoCallbackUrl} />
+	<CardForm {form} {mode} on:success={gotoCollection} on:cancel={gotoCollection} />
 </Card>
