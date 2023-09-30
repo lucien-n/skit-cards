@@ -5,8 +5,10 @@ export const GET: RequestHandler = async ({
 	params: { collection_uid, card_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
-	if (!card_uid || card_uid.length !== 21) return new Response(null, { status: 422 });
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
+	const { uid: cardUid, response: cardResponse } = checkUid(card_uid);
+	if (cardResponse) return cardResponse;
 
 	const query = supabase
 		.from('cards')
@@ -19,7 +21,7 @@ export const GET: RequestHandler = async ({
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	if ({ ...data[0], collection: collection_uid, uid: card_uid } satisfies TFlashcard)
+	if ({ ...data[0], collection: collectionUid, uid: cardUid } satisfies TFlashcard)
 		return new Response(JSON.stringify({ data }), { status });
 
 	return new Response();
