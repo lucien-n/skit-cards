@@ -43,7 +43,7 @@
 						>
 					{/if}
 
-					<CardCarrousel {cards} />
+					<CardCarrousel {cards} {profile} author={collection.author} />
 				{:else}
 					<p>
 						No cards in collection. <a

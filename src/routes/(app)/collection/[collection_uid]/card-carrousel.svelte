@@ -2,7 +2,9 @@
 	import Paginator from '$components/cards/paginator.svelte';
 	import Flashcard from './flashcard.svelte';
 
+	export let author: string;
 	export let cards: TFlashcard[];
+	export let profile: TPublicProfile | null;
 
 	let currentIndex = 0;
 	let carrouselEnd: boolean = false;
@@ -17,7 +19,11 @@
 
 <section class="flex flex-col w-full h-fit items-center gap-3">
 	{#key currentIndex}
-		<Flashcard flashcard={getCurrentCard()} on:next={nextCard} />
+		<Flashcard
+			flashcard={getCurrentCard()}
+			on:next={nextCard}
+			isAuthor={!!profile && profile.name === author}
+		/>
 	{/key}
 	<Paginator
 		bind:current={currentIndex}

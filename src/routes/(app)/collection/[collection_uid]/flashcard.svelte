@@ -6,6 +6,7 @@
 	import { fade } from 'svelte/transition';
 
 	export let flashcard: TFlashcard;
+	export let isAuthor: boolean = false;
 
 	const dispatch = createEventDispatcher();
 
@@ -22,9 +23,11 @@
 
 {#key showAnswer}
 	<article class="relative w-full md:w-2/3 xl:w-1/2 h-[350px] flex flex-col items-center">
-		<a class="absolute right-3 top-3" href={url.href} on:click>
-			<Edit />
-		</a>
+		{#if isAuthor}
+			<a class="absolute right-3 top-3" href={url.href} on:click>
+				<Edit />
+			</a>
+		{/if}
 		<button
 			in:fade={{ duration: 150 }}
 			on:click={toggleShowAnswer}
