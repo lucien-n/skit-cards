@@ -39,14 +39,7 @@ export const GET: RequestHandler = async ({
 	for (const collectionData of data) {
 		collections.push({
 			...collectionData,
-			author: {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				uid: collectionData.author.uid,
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				name: collectionData.author.name
-			}
+			author: collectionData.author?.name || 'Unknown'
 		});
 	}
 

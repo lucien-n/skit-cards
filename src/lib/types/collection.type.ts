@@ -1,9 +1,6 @@
 export type Collection = {
 	uid: string;
-	author: {
-		uid: string;
-		name: string;
-	};
+	author: string; // name
 	name: string;
 	is_public: boolean;
 	created_at: string;

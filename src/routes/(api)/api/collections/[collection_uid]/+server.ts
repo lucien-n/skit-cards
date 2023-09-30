@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({
 
 	const query = supabase
 		.from('cards_collections')
-		.select('uid, author:profiles(name:name, uid:uid), name, is_public, created_at')
+		.select('uid, author:profiles(name:name), name, is_public, created_at')
 		.match({ uid: collection_uid });
 
 	const { data, error, status }: DbResult<typeof query> = await query;
@@ -32,12 +32,17 @@ export const GET: RequestHandler = async ({
 	if (!data[0].author)
 		return new Response(JSON.stringify({ error: 'Could not find author' }), { status: 404 });
 
+	const collection: TCollection = {
+		...data[0],
+		author: data[0].author?.name || 'Unknown'
+	};
+
 	setHeaders(getHeaders('collection'));
-	redis.set(redisKey, JSON.stringify(data[0]), 'EX', getExpiration('collection'));
+	redis.set(redisKey, JSON.stringify(collection), 'EX', getExpiration('collection'));
 
 	return new Response(
 		JSON.stringify({
-			data: data[0]
+			data: collection
 		}),
 		{ status }
 	);
