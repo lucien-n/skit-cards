@@ -35,14 +35,13 @@
 			{:then { data: cards, error }}
 				{#if error}
 					<ErrorAlert {error} />
-				{:else if cards}
+				{:else if cards && cards.length > 0}
 					{#if profile && profile.name === collection.author}
 						<a
 							href={getAddUrl(collection.uid)}
 							class="rounded-md text-lg px-5 py-2 bg-primary text-background">Add</a
 						>
 					{/if}
-
 					<CardCarrousel {cards} {profile} author={collection.author} />
 				{:else}
 					<p>
