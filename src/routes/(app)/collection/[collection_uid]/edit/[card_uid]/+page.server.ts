@@ -47,12 +47,16 @@ export const actions: Actions = {
 		const answer = form.data.answer;
 
 		const uid = card_uid && card_uid.length === 21 ? card_uid : null;
-		const url = `/api/collections/${collection_uid}/cards${uid ? `/${uid}` : ''}`;
 
-		const { error, status } = await cfetch<null>(url, uid ? 'PUT' : 'POST', fetch, {
-			body: JSON.stringify({ question, answer, uid }),
-			headers: { 'Content-Type': 'application/json' }
-		});
+		const { error, status } = await cfetch<null>(
+			`/api/collections/${collection_uid}/cards`,
+			uid ? 'PUT' : 'POST',
+			fetch,
+			{
+				body: JSON.stringify({ question, answer, uid }),
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
 
 		if (error)
 			fail(status, {
