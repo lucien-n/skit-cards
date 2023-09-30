@@ -1,8 +1,10 @@
 import { checkUid } from '$server/helper';
+import { redis } from '$server/redis';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
 
 export const GET: RequestHandler = async ({
+	setHeaders,
 	url: { searchParams },
 	params: { collection_uid },
 	locals: { supabase }
@@ -10,12 +12,20 @@ export const GET: RequestHandler = async ({
 	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
 	if (collectionResponse) return collectionResponse;
 
-	let fetchSingle = false;
-	let cardUid: string | null = null;
+	const fetchSingle = searchParams.has('uid');
+	const card_uid: string | null = searchParams.get('uid');
 
-	if (searchParams.has('uid')) {
-		cardUid = searchParams.get('uid');
-		fetchSingle = true;
+	const { uid: cardUid, response: cardResponse } = checkUid(card_uid);
+	if (fetchSingle && cardResponse) return cardResponse;
+
+	if (fetchSingle) {
+		const redisKey = `collection:${collectionUid}:card:${cardUid}`;
+		const cached = await redis.get(redisKey);
+		if (cached) {
+			const ttl = await redis.ttl(redisKey);
+			setHeaders({ 'Cache-Control': `max-age=${ttl}` });
+			return new Response(JSON.stringify({ data: JSON.parse(cached) }), { status: 200 });
+		}
 	}
 
 	const query = supabase
@@ -32,14 +42,14 @@ export const GET: RequestHandler = async ({
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	if (fetchSingle) {
-		if (data[0] satisfies TFlashcard)
-			return new Response(JSON.stringify({ data: data[0] }), { status });
-	} else {
-		if (data satisfies TFlashcard[]) return new Response(JSON.stringify({ data }), { status });
+	const cards: TFlashcard[] = [];
+
+	for (const cardData of data) {
+		cards.push(cardData);
 	}
 
-	return new Response();
+	if (fetchSingle) return new Response(JSON.stringify({ data: cards[0] }), { status });
+	else return new Response(JSON.stringify({ data: cards }), { status });
 };
 
 export const POST: RequestHandler = async ({

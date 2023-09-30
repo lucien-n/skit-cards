@@ -1,4 +1,4 @@
-export const checkUid = (uid?: string): { uid: string; response?: Response } => {
+export const checkUid = (uid?: string | null): { uid: string; response?: Response } => {
 	if (!uid || uid.length !== 21)
 		return {
 			uid: '',
