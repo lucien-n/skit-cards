@@ -1,3 +1,4 @@
+import { checkUid } from '$server/helper';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
 
@@ -6,7 +7,8 @@ export const GET: RequestHandler = async ({
 	params: { collection_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
 
 	let fetchSingle = false;
 	let cardUid: string | null = null;
@@ -19,9 +21,10 @@ export const GET: RequestHandler = async ({
 	const query = supabase
 		.from('cards')
 		.select('uid, collection, question, answer')
-		.match(
-			fetchSingle ? { collection: collection_uid, uid: cardUid } : { collection: collection_uid }
-		);
+		.match({
+			collection: collectionUid,
+			...(fetchSingle ? { uid: cardUid } : {})
+		});
 
 	const { data, error, status }: DbResult<typeof query> = await query;
 
@@ -44,7 +47,8 @@ export const POST: RequestHandler = async ({
 	params: { collection_uid },
 	locals: { supabase }
 }) => {
-	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
 
 	const { question, answer } = await request.json();
 
@@ -62,7 +66,7 @@ export const POST: RequestHandler = async ({
 	const id = nanoid();
 	const query = supabase
 		.from('cards')
-		.insert({ uid: id, collection: collection_uid, question, answer })
+		.insert({ uid: id, collection: collectionUid, question, answer })
 		.select('uid');
 
 	const { data, error, status }: DbResult<typeof query> = await query;
