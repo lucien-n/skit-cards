@@ -3,4 +3,5 @@ export type Flashcard = {
 	collection: string;
 	question: string;
 	answer: string;
+	created_at: string;
 };

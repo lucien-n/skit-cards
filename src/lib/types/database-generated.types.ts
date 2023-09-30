@@ -45,6 +45,7 @@ export interface Database {
           author: string
           created_at: string
           is_public: boolean
+          length: number
           name: string
           uid: string
         }
@@ -52,6 +53,7 @@ export interface Database {
           author: string
           created_at?: string
           is_public?: boolean
+          length?: number
           name: string
           uid?: string
         }
@@ -59,6 +61,7 @@ export interface Database {
           author?: string
           created_at?: string
           is_public?: boolean
+          length?: number
           name?: string
           uid?: string
         }
