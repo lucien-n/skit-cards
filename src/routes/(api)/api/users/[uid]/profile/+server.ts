@@ -12,11 +12,11 @@ export const GET: RequestHandler = async ({ params, setHeaders, locals: { supaba
 	else name = uid_or_username;
 
 	const redisKeyPattern = `profile:${uid ? uid + '|*' : '*|' + name}`;
-	const redisKey = (await redis.keys(redisKeyPattern))[0];
-	const cached = await redis.get(redisKey);
+	const [_, redisKeys] = await redis.scan(0, 'MATCH', redisKeyPattern);
+	const cached = await redis.get(redisKeys[0]);
 
 	if (cached) {
-		const ttl = await redis.ttl(redisKey);
+		const ttl = await redis.ttl(redisKeys[0]);
 		setHeaders({ 'Cache-Control': `max-age=${ttl}` });
 		return new Response(JSON.stringify({ data: JSON.parse(cached) }), { status: 200 });
 	}

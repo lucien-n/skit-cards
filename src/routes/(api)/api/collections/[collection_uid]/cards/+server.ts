@@ -16,7 +16,7 @@ const getCollectionLength = async (collectionUid: string): Promise<number> => {
 };
 
 const getCachedCards = async (collectionUid: string): Promise<TFlashcard[]> => {
-	const redisKeys = await redis.keys(`collection:${collectionUid}:*`);
+	const [_, redisKeys] = await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`);
 	if (!(redisKeys.length > 0)) return [];
 
 	const cached = await redis.mget(redisKeys);
