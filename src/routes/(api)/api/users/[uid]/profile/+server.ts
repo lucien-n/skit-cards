@@ -41,7 +41,12 @@ export const GET: RequestHandler = async ({ params, setHeaders, locals: { supaba
 	} satisfies TPublicProfile;
 
 	setHeaders(getHeaders('profile'));
-	redis.set(redisKey, JSON.stringify(profile), 'EX', getExpiration('profile'));
+	redis.set(
+		`profile:${profile.uid + '|' + profile.name}`,
+		JSON.stringify(profile),
+		'EX',
+		getExpiration('profile')
+	);
 
 	return new Response(JSON.stringify({ data: profile }), { status: 200 });
 };
