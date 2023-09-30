@@ -1,7 +1,22 @@
+import { getHeaders, getExpiration } from '$server/cache';
+import { redis } from '$server/redis';
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ params: { collection_uid }, locals: { supabase } }) => {
+export const GET: RequestHandler = async ({
+	setHeaders,
+	params: { collection_uid },
+	locals: { supabase }
+}) => {
 	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
+
+	const redisKey = 'collection:' + collection_uid;
+	const cached = await redis.get(redisKey);
+
+	if (cached && (JSON.parse(cached) satisfies TCollection)) {
+		const ttl = await redis.ttl(redisKey);
+		setHeaders({ 'Cache-Control': `max-age=${ttl}` });
+		return new Response(JSON.stringify({ data: JSON.parse(cached) }), { status: 200 });
+	}
 
 	const query = supabase
 		.from('cards_collections')
@@ -16,6 +31,9 @@ export const GET: RequestHandler = async ({ params: { collection_uid }, locals: 
 
 	if (!data[0].author)
 		return new Response(JSON.stringify({ error: 'Could not find author' }), { status: 404 });
+
+	setHeaders(getHeaders('collection'));
+	redis.set(redisKey, JSON.stringify(data[0]), 'EX', getExpiration('collection'));
 
 	return new Response(
 		JSON.stringify({
