@@ -39,39 +39,6 @@ export const GET: RequestHandler = async ({
 	return new Response();
 };
 
-export const PUT: RequestHandler = async ({
-	request,
-	params: { collection_uid },
-	locals: { supabase }
-}) => {
-	if (!collection_uid || collection_uid.length !== 21) return new Response(null, { status: 422 });
-
-	const { question, answer, uid } = await request.json();
-
-	if (!uid || uid.length !== 21)
-		return new Response(JSON.stringify({ error: 'Please provide a valid uid' }), { status: 422 });
-
-	if (!question || question.length < 3 || question.length > 255)
-		return new Response(
-			JSON.stringify({ error: 'Please provide a valid question (3 <= length <= 255)' }),
-			{ status: 422 }
-		);
-	if (!answer || answer.length < 3 || answer.length > 255)
-		return new Response(
-			JSON.stringify({ error: 'Please provide a valid answer (3 <= length <= 255)' }),
-			{ status: 422 }
-		);
-
-	const query = supabase
-		.from('cards')
-		.update({ question, answer })
-		.match({ collection: collection_uid, uid });
-
-	const { status }: DbResult<typeof query> = await query;
-
-	return new Response(null, { status });
-};
-
 export const POST: RequestHandler = async ({
 	request,
 	params: { collection_uid },
