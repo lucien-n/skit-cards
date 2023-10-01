@@ -1,39 +1,38 @@
 import { nanoid } from 'nanoid';
 import dotenv from 'dotenv';
 import supa from '@supabase/supabase-js';
+import data from './data.json' assert { type: 'json' };
 
 const { SupabaseClient } = supa;
 
 dotenv.config();
 
-const collection = {
-	uid: nanoid(),
-	name: 'Capitals of Europe',
-	author: '37f21f9d-f7f5-4105-953d-fc9264f57997',
-	is_public: true,
-	created_at: new Date().toUTCString()
-};
+const author = "37f21f9d-f7f5-4105-953d-fc9264f57997";
 
-const capitals = [
-	['France', 'Paris'],
-	['Germany', 'Berlin'],
-	['Luxembourg', 'Luxembourg'],
-	['United Kingdom', 'London'],
-	['Japan', 'Tokyo']
-];
-
-const generateCards = () => {
+const generateCards = (collection) => {
 	const cards = [];
-	for (const [country, capital] of capitals) {
+	for (const cardData of collection.cards) {
 		const card = {
 			uid: nanoid(),
 			collection: collection.uid,
-			question: `What is the capital of ${country}?`,
-			answer: capital
+			question: cardData.question,
+			answer: cardData.answer,
+			created_at: cardData.created_at
 		};
 		cards.push(card);
 	}
 	return cards;
+};
+
+const generateCollection = (collection) => {
+	collection.uid = nanoid();
+	collection.author = author;
+
+	const cards = generateCards(collection);
+
+	delete collection.cards;
+
+	return { collection, cards };
 };
 
 const generate = async () => {
@@ -47,37 +46,44 @@ const generate = async () => {
 
 	const supabase = new SupabaseClient(supaUrl, supaKey);
 
-	const collectionCreated = await insertCollection(supabase);
-	if (!collectionCreated) {
-		console.warn('Aborting since collection creation failed.');
-		return;
-	}
+	for (const col of data.collections) {
+		const { collection, cards } = generateCollection(col);
+		console.log(`Generating ${collection.name}`);
 
-	const cardsCreated = await insertCards(supabase);
-	if (cardsCreated) {
-		console.log('Data generation successful');
-	} else {
-		console.warn('Aborting since cards creation failed.');
-		return;
+		await supabase.from("cards_collections").delete().eq("name", collection.name);
+
+		const collectionCreated = await insertCollection(supabase, collection);
+		if (!collectionCreated) {
+			console.warn(`Aborting collection "${collection.name}" creation.`);
+			continue;
+		}
+
+		const cardsCreated = await insertCards(supabase, cards);
+		if (cardsCreated) {
+			console.log(`Data generation successful for "${collection.name}"`);
+		} else {
+			console.warn(`Aborting collection "${collection.name}" cards creation`);
+			continue;
+		}
 	}
 };
 
-const insertCollection = async (supabase) => {
-	const { error } = await supabase.from('cards_collections').insert(collection);
+const insertCollection = async (supabase, collection) => {
+	const { error, status } = await supabase.from('cards_collections').insert(collection);
 
 	if (error) {
-		console.error(`[${error.code}] while creating collection: ${error.message}`);
+		console.error(`[${error.code}] <${status}> while creating collection: ${error.message}`);
 		return false;
 	}
 
 	return true;
 };
 
-const insertCards = async (supabase) => {
-	const { error } = await supabase.from('cards').insert(generateCards());
+const insertCards = async (supabase, cards) => {
+	const { error, status } = await supabase.from('cards').insert(cards);
 
 	if (error) {
-		console.error(`[${error.code}] while creating cards: ${error.message}`);
+		console.error(`[${error.code}] <${status}> while creating cards: ${error.message}`);
 		return false;
 	}
 
