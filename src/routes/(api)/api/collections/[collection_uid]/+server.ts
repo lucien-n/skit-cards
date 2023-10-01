@@ -59,15 +59,14 @@ export const PUT: RequestHandler = async ({
 	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
 	if (collectionResponse) return collectionResponse;
 
-	const body = await request.json();
+	const { name, isPublic } = await request.json();
 
-	const isValid = collectionSchema.parse(body);
-
-	const { name, isPublic } = body;
-	console.log(isValid);
-
-	if (!isValid)
-		return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 422 });
+	try {
+		collectionSchema.parse({ name, isPublic });
+	} catch (e: any) {
+		if (e.errors[0]?.message)
+			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+	}
 
 	const query = supabase
 		.from('cards_collections')
