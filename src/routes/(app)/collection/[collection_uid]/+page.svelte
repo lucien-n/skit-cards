@@ -43,10 +43,10 @@
 					{collection.name}
 				</h1>
 				<div class="flex gap-4">
-					<Button variant="ghost" href={getSettingsUrl(collection)}>
-						<Settings />
-					</Button>
 					{#if profile && profile.name === collection.author}
+						<Button variant="ghost" href={getSettingsUrl(collection)}>
+							<Settings />
+						</Button>
 						<Button
 							href={getAddUrl(collection.uid)}
 							class="rounded-md text-lg px-5 py-2 bg-primary text-background flex items-center gap-1"
