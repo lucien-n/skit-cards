@@ -237,3 +237,26 @@ export const PUT: RequestHandler = async ({
 
 	return new Response(null, { status });
 };
+
+export const DELETE: RequestHandler = async ({
+	request,
+	params: { collection_uid },
+	locals: { supabase }
+}) => {
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
+
+	const { card_uid } = await request.json();
+	const { uid: cardUid, response: cardResponse } = checkUid(card_uid);
+	if (cardResponse) return cardResponse;
+
+	const query = supabase.from('cards').delete().match({ collection: collectionUid, uid: cardUid });
+	const { error, status }: DbResult<typeof query> = await query;
+
+	if (error) return new Response(JSON.stringify({ error }), { status });
+
+	const redisKey = `collection:${collectionUid}:${cardUid}`;
+	redis.del(redisKey);
+
+	return new Response(null, { status });
+};

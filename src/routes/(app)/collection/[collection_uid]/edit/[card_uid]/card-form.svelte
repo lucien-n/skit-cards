@@ -7,6 +7,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$components/ui/button/button.svelte';
 	import ErrorAlert from '$components/cards/error-alert.svelte';
+	import { Trash2 } from 'lucide-svelte';
 
 	export let form: SuperValidated<CardSchema>;
 	export let mode: string = 'new';
@@ -62,7 +63,10 @@
 		</Form.Field>
 
 		<div class="flex w-full gap-3">
-			<Form.Button disabled={loading} class="pt-2 w-full"
+			<Form.Button formaction="?/delete" variant="destructive">
+				<Trash2 />
+			</Form.Button>
+			<Form.Button formaction="?/edit-create" disabled={loading} class="pt-2 w-full"
 				>{mode === 'edit'
 					? loading
 						? 'Saving'

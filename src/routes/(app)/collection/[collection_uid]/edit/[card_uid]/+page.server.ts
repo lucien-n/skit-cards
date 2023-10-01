@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ params: { card_uid }, url: { search
 };
 
 export const actions: Actions = {
-	default: async (event) => {
+	'edit-create': async (event) => {
 		const {
 			fetch,
 			params: { collection_uid, card_uid }
@@ -73,5 +73,18 @@ export const actions: Actions = {
 			status,
 			form
 		};
+	},
+	delete: async ({ fetch, params: { collection_uid, card_uid } }) => {
+		const { error, status } = await cfetch<null>(
+			`/api/collections/${collection_uid}/cards`,
+			'DELETE',
+			fetch,
+			{ body: JSON.stringify({ collection_uid, card_uid }) }
+		);
+
+		if (error)
+			fail(status, {
+				error
+			});
 	}
 };
