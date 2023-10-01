@@ -45,12 +45,12 @@ const generate = async () => {
 	}
 
 	const supabase = new SupabaseClient(supaUrl, supaKey);
+	await supabase.from("cards_collections").delete().eq("author", author);
 
 	for (const col of data.collections) {
 		const { collection, cards } = generateCollection(col);
 		console.log(`Generating ${collection.name}`);
 
-		await supabase.from("cards_collections").delete().eq("name", collection.name);
 
 		const collectionCreated = await insertCollection(supabase, collection);
 		if (!collectionCreated) {
