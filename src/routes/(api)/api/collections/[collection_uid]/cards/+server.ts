@@ -223,8 +223,6 @@ export const PUT: RequestHandler = async ({
 
 	if (error) return new Response(JSON.stringify({ error }), { status });
 
-	console.log('Updated card in db');
-
 	const redisKey = `collection:${collectionUid}:${cardUid}`;
 	const cached = await redis.get(redisKey);
 	if (cached) {

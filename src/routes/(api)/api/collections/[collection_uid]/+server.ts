@@ -41,7 +41,6 @@ export const GET: RequestHandler = async ({
 
 	setHeaders(getHeaders('collection'));
 	redis.set(redisKey, JSON.stringify(collection), 'EX', getExpiration('collection'));
-	console.log('db:', collection);
 	return new Response(
 		JSON.stringify({
 			data: collection

@@ -54,15 +54,11 @@ export const actions: Actions = {
 			});
 	},
 	delete: async ({ fetch, params: { collection_uid } }) => {
-		console.log('delete', collection_uid);
-
 		const { error, status } = await cfetch<null>(
 			`/api/collections/${collection_uid}`,
 			'DELETE',
 			fetch
 		);
-
-		console.log(error, status);
 
 		if (error)
 			fail(status, {
