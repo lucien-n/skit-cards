@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import ErrorAlert from '$components/cards/error-alert.svelte';
+	import Button from '$components/ui/button/button.svelte';
 	import { setTitle } from '$lib/helper';
 	import { Plus, Settings } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import CardCarrousel from './card-carrousel.svelte';
-	import Button from '$components/ui/button/button.svelte';
+	import CardSkeleton from './flashcard-skeleton.svelte';
 
 	export let data: PageData;
 
@@ -58,7 +59,7 @@
 				</div>
 			</div>
 			{#await cardsPromise}
-				<p>Fetching collection cards</p>
+				<CardSkeleton />
 			{:then { data: cards, error }}
 				{#if error}
 					<ErrorAlert {error} />
