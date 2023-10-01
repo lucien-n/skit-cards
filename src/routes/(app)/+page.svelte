@@ -5,6 +5,7 @@
 	import type { PageData } from './$types';
 	import Collection from './collection.svelte';
 	import { setTitle } from '$lib/helper';
+	import CollectionSkeleton from './collection-skeleton.svelte';
 
 	export let data: PageData;
 
@@ -20,16 +21,18 @@
 	setTitle('Home');
 </script>
 
-{#await collectionsPromise}
-	<p>Getting collections</p>
-{:then { data: collections, error }}
-	{#if error}
-		<ErrorAlert {error} />
-	{/if}
+<section
+	class="w-full md:w-3/4 xl:w-2/3 h-4/5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-rows-5 gap-3"
+>
+	{#await collectionsPromise}
+		{#each { length: 9 } as _}
+			<CollectionSkeleton />
+		{/each}
+	{:then { data: collections, error }}
+		{#if error}
+			<ErrorAlert {error} />
+		{/if}
 
-	<section
-		class="w-full md:w-3/4 xl:w-2/3 h-4/5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-rows-5 gap-3"
-	>
 		{#if collections}
 			{#each collections as collection}
 				<a href="/collection/{collection.uid}">
@@ -44,5 +47,5 @@
 				</a>
 			</Card>
 		{/if}
-	</section>
-{/await}
+	{/await}
+</section>
