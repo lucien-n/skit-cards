@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import Button from '$components/ui/button/button.svelte';
 	import * as Form from '$components/ui/form';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { Eye, EyeOff } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import { signinSchema, type SigninSchema } from './schema';
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { createEventDispatcher } from 'svelte';
 
 	export let form: SuperValidated<SigninSchema>;
 
 	const dispatch = createEventDispatcher();
 
 	let loading = false;
+	let showPassword: boolean = false;
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -20,6 +23,10 @@
 			// @ts-ignore
 			dispatch(result.type, result.data);
 		};
+	};
+
+	const toggleShowPassword = () => {
+		showPassword = !showPassword;
 	};
 </script>
 
@@ -36,7 +43,22 @@
 		<Form.Field {config} name="password">
 			<Form.Item>
 				<Form.Label>Password</Form.Label>
-				<Form.Input type="password" minlength={8} maxlength={255} placeholder="●●●●●●●●" />
+				<div class="flex">
+					<Form.Input
+						type={showPassword ? 'text' : 'password'}
+						minlength={8}
+						maxlength={255}
+						placeholder="●●●●●●●●"
+						class="rounded-r-none"
+					/>
+					<Button on:click={toggleShowPassword} class="rounded-l-none" type="button">
+						{#if showPassword}
+							<EyeOff />
+						{:else}
+							<Eye />
+						{/if}
+					</Button>
+				</div>
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
