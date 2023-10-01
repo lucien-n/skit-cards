@@ -91,3 +91,22 @@ export const PUT: RequestHandler = async ({
 
 	return new Response(null, { status });
 };
+
+export const DELETE: RequestHandler = async ({
+	params: { collection_uid },
+	locals: { supabase }
+}) => {
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
+
+	const query = supabase.from('cards_collections').delete().match({ uid: collectionUid });
+	const { error, status }: DbResult<typeof query> = await query;
+
+	if (error) return new Response(JSON.stringify({ error }), { status });
+
+	const redisKey = `collection:${collectionUid}`;
+	const [_, redisKeys] = await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`);
+	redis.del([redisKey, ...redisKeys]);
+
+	return new Response(null, { status });
+};

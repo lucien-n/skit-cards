@@ -6,6 +6,7 @@
 	import * as Form from '$components/ui/form';
 	import { enhance } from '$app/forms';
 	import { Button } from '$components/ui/button';
+	import { Trash, Trash2 } from 'lucide-svelte';
 
 	export let form: SuperValidated<CollectionSchema>;
 
@@ -50,7 +51,11 @@
 		</Form.Field>
 
 		<div class="flex w-full gap-3">
-			<Form.Button disabled={loading} class="pt-2 w-full">{loading ? 'Saving' : 'Save'}</Form.Button
+			<Form.Button formaction="?/delete" variant="destructive">
+				<Trash2 />
+			</Form.Button>
+			<Form.Button formaction="?/update" disabled={loading} class="pt-2 w-full"
+				>{loading ? 'Saving' : 'Save'}</Form.Button
 			>
 			<Button type="button" on:click={cancel}>Cancel</Button>
 		</div>

@@ -1,4 +1,4 @@
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, type Actions, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { collectionSchema } from '$lib/schemas/collection_schema';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ url: { searchParams } }) => {
 };
 
 export const actions: Actions = {
-	default: async (event) => {
+	update: async (event) => {
 		const {
 			fetch,
 			params: { collection_uid },
@@ -47,6 +47,22 @@ export const actions: Actions = {
 			fetch,
 			{ body: JSON.stringify({ isPublic, name }), headers: { 'Content-Type': 'application/json' } }
 		);
+
+		if (error)
+			fail(status, {
+				error
+			});
+	},
+	delete: async ({ fetch, params: { collection_uid } }) => {
+		console.log('delete', collection_uid);
+
+		const { error, status } = await cfetch<null>(
+			`/api/collections/${collection_uid}`,
+			'DELETE',
+			fetch
+		);
+
+		console.log(error, status);
 
 		if (error)
 			fail(status, {
