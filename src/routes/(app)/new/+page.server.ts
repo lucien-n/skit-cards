@@ -2,7 +2,7 @@ import { cfetch } from '$lib/cfetch';
 import { fail, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
-import { collectionSchema } from './collection_schema';
+import { collectionSchema } from '$lib/schemas/collection_schema';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -29,7 +29,7 @@ export const actions: Actions = {
 		if (!session) return fail(401, { error: 'You must be signed in', form });
 
 		const name = form.data.name;
-		const is_public = form.data.is_public;
+		const is_public = form.data.isPublic;
 
 		const {
 			data: uid,

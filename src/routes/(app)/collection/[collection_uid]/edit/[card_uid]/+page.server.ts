@@ -1,25 +1,21 @@
 import { cfetch } from '$lib/cfetch';
+import { cardSchema } from '$lib/schemas/card_schema';
 import { fail, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
-import { cardSchema } from './card_schema';
 
 export const load: PageServerLoad = async ({ params: { card_uid }, url: { searchParams } }) => {
 	const mode = card_uid === 'new' ? 'new' : 'edit';
 
-	const form = superValidate(cardSchema).then((res) => {
-		if (mode === 'edit') {
-			const question = searchParams.get('question');
-			const answer = searchParams.get('answer');
+	const form = await superValidate(cardSchema);
 
-			if (question && answer) {
-				res.data.question = question;
-				res.data.answer = answer;
-			}
-		}
+	if (mode === 'edit') {
+		const question = searchParams.get('question');
+		const answer = searchParams.get('answer');
 
-		return res;
-	});
+		if (question) form.data.question = question;
+		if (answer) form.data.answer = answer;
+	}
 
 	return {
 		form,

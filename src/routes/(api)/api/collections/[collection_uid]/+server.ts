@@ -1,4 +1,6 @@
-import { getHeaders, getExpiration } from '$server/cache';
+import { collectionSchema } from '$lib/schemas/collection_schema';
+import { getExpiration, getHeaders } from '$server/cache';
+import { checkUid } from '$server/helper';
 import { redis } from '$server/redis';
 import type { RequestHandler } from '@sveltejs/kit';
 
@@ -46,4 +48,37 @@ export const GET: RequestHandler = async ({
 		}),
 		{ status }
 	);
+};
+
+export const PUT: RequestHandler = async ({
+	request,
+	params: { collection_uid },
+	locals: { supabase }
+}) => {
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
+
+	const body = await request.json();
+
+	const isValid = collectionSchema.parse(body);
+	console.log(isValid);
+
+	if (!isValid)
+		return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 422 });
+
+	const query = supabase
+		.from('cards_collections')
+		.update({ ...body })
+		.match({ uid: collectionUid });
+
+	const { error, status }: DbResult<typeof query> = await query;
+
+	if (error) return new Response(JSON.stringify({ error }), { status });
+
+	const redisKey = `collection:${collectionUid}`;
+	redis.set(redisKey, 'EX', getExpiration('collection'));
+
+	// TODO: UPDATE REDIS COLLECTION
+
+	return new Response(null, { status });
 };

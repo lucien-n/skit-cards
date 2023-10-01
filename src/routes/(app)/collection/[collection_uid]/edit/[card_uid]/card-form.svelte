@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { cardSchema, type CardSchema } from './card_schema';
+	import { cardSchema, type CardSchema } from '$lib/schemas/card_schema';
 	import type { SubmitFunction } from 'formsnap';
 	import { createEventDispatcher } from 'svelte';
 	import * as Form from '$components/ui/form';
