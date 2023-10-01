@@ -17,6 +17,7 @@ export const GET: RequestHandler = async ({
 	if (cached && (JSON.parse(cached) satisfies TCollection)) {
 		const ttl = await redis.ttl(redisKey);
 		setHeaders({ 'Cache-Control': `max-age=${ttl}` });
+		console.log('cached:', cached);
 		return new Response(JSON.stringify({ data: JSON.parse(cached) }), { status: 200 });
 	}
 
@@ -41,7 +42,7 @@ export const GET: RequestHandler = async ({
 
 	setHeaders(getHeaders('collection'));
 	redis.set(redisKey, JSON.stringify(collection), 'EX', getExpiration('collection'));
-
+	console.log('db:', collection);
 	return new Response(
 		JSON.stringify({
 			data: collection
@@ -51,6 +52,7 @@ export const GET: RequestHandler = async ({
 };
 
 export const PUT: RequestHandler = async ({
+	setHeaders,
 	request,
 	params: { collection_uid },
 	locals: { supabase }
@@ -61,6 +63,8 @@ export const PUT: RequestHandler = async ({
 	const body = await request.json();
 
 	const isValid = collectionSchema.parse(body);
+
+	const { name, isPublic } = body;
 	console.log(isValid);
 
 	if (!isValid)
@@ -68,7 +72,7 @@ export const PUT: RequestHandler = async ({
 
 	const query = supabase
 		.from('cards_collections')
-		.update({ ...body })
+		.update({ name, is_public: isPublic })
 		.match({ uid: collectionUid });
 
 	const { error, status }: DbResult<typeof query> = await query;
@@ -76,9 +80,16 @@ export const PUT: RequestHandler = async ({
 	if (error) return new Response(JSON.stringify({ error }), { status });
 
 	const redisKey = `collection:${collectionUid}`;
-	redis.set(redisKey, 'EX', getExpiration('collection'));
-
-	// TODO: UPDATE REDIS COLLECTION
+	const cached = await redis.get(redisKey);
+	if (cached) {
+		redis.set(
+			redisKey,
+			JSON.stringify({ ...JSON.parse(cached), name, is_public: isPublic }),
+			'EX',
+			getExpiration('collection')
+		);
+		setHeaders({ 'Cache-Control': 'max-age=0' });
+	}
 
 	return new Response(null, { status });
 };
