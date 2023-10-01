@@ -184,7 +184,12 @@ export const POST: RequestHandler = async ({
 
 	const { uid, created_at } = data[0];
 
-	redis.set(`collection:${collectionUid}:${uid}`, JSON.stringify({ ...card, created_at }));
+	redis.set(
+		`collection:${collectionUid}:${uid}`,
+		JSON.stringify({ ...card, created_at }),
+		'EX',
+		getExpiration('card')
+	);
 
 	return new Response(JSON.stringify({ data: uid }), { status });
 };
