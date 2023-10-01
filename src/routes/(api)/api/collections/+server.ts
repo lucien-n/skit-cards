@@ -1,3 +1,6 @@
+import { collectionSchema } from '$lib/schemas/collection_schema';
+import { getExpiration } from '$server/cache';
+import { redis } from '$server/redis';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
 
@@ -61,10 +64,21 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 
 	const id = nanoid();
 
-	const query = supabase
-		.from('cards_collections')
-		.insert({ uid: id, author: session.user.id, name, is_public })
-		.select('uid');
+	const collection = {
+		uid: id,
+		author: session.user.id,
+		name,
+		is_public
+	};
+
+	try {
+		collectionSchema.parse({ name, isPublic: is_public });
+	} catch (e: any) {
+		if (e.errors[0]?.message)
+			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+	}
+
+	const query = supabase.from('cards_collections').insert(collection).select('uid, created_at');
 
 	const { data, error, status }: DbResult<typeof query> = await query;
 
@@ -72,7 +86,15 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 
 	if (!data || !(data.length > 0)) return new Response(null, { status: 204 });
 
-	const uid = data[0].uid;
+	const { uid, created_at } = data[0];
+
+	const redisKey = `collection:${id}`;
+	redis.set(
+		redisKey,
+		JSON.stringify({ ...collection, created_at }),
+		'EX',
+		getExpiration('collection')
+	);
 
 	return new Response(JSON.stringify({ data: uid }), { status });
 };
