@@ -6,6 +6,7 @@
 	import * as Form from '$components/ui/form';
 	import { enhance } from '$app/forms';
 	import Button from '$components/ui/button/button.svelte';
+	import ErrorAlert from '$components/cards/error-alert.svelte';
 
 	export let form: SuperValidated<CardSchema>;
 	export let mode: string = 'new';
@@ -13,17 +14,21 @@
 	const dispatch = createEventDispatcher();
 
 	let loading: boolean = false;
+	let error: string = '';
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
 		return async ({ result }) => {
 			loading = false;
+			if (result.type === 'failure') error = result.data?.error;
 			dispatch(result.type, result);
 		};
 	};
 
 	const cancel = () => dispatch('cancel');
 </script>
+
+<ErrorAlert {error} />
 
 <Form.Root {form} schema={cardSchema} let:config>
 	<form method="POST" use:enhance={handleSubmit} class="flex flex-col gap-2">

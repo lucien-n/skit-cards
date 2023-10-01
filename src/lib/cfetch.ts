@@ -17,14 +17,14 @@ export const cfetch = async <T>(
 		let error;
 		try {
 			const data = await res.json();
-			error = data.error.message;
+			error = data.error || data.error.message;
 		} catch (e) {
 			/* empty */
 		}
 
 		return {
 			data: null,
-			error: `[${res.status}] <${method}> '${url}'${error ? ' => ' + error : ''}`,
+			error: error || `[${res.status}] <${method}> '${url}'`,
 			status: res.status,
 			statusText: res.statusText
 		};

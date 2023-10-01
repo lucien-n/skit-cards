@@ -17,7 +17,6 @@ export const GET: RequestHandler = async ({
 	if (cached && (JSON.parse(cached) satisfies TCollection)) {
 		const ttl = await redis.ttl(redisKey);
 		setHeaders({ 'Cache-Control': `max-age=${ttl}` });
-		console.log('cached:', cached);
 		return new Response(JSON.stringify({ data: JSON.parse(cached) }), { status: 200 });
 	}
 

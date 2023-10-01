@@ -1,9 +1,11 @@
+import { cardSchema } from '$lib/schemas/card_schema';
 import { getExpiration } from '$server/cache';
 import { checkUid } from '$server/helper';
 import { redis } from '$server/redis';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
+import type { ZodError } from 'zod';
 
 const getCollectionLength = async (collectionUid: string): Promise<number> => {
 	const cachedCollection = await redis.get(`collection:${collectionUid}`);
@@ -187,4 +189,48 @@ export const POST: RequestHandler = async ({
 	return new Response(JSON.stringify({ data: uid }), { status });
 };
 
-// TODO:  CARD UPDATE
+export const PUT: RequestHandler = async ({
+	request,
+	setHeaders,
+	params: { collection_uid },
+	locals: { supabase }
+}) => {
+	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
+	if (collectionResponse) return collectionResponse;
+
+	const { question, answer, uid } = await request.json();
+	const { uid: cardUid, response: cardResponse } = checkUid(uid);
+	if (cardResponse) return cardResponse;
+
+	try {
+		cardSchema.parse({ question, answer });
+	} catch (e: any) {
+		if (e.errors[0]?.message)
+			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+	}
+
+	const query = supabase
+		.from('cards')
+		.update({ question, answer })
+		.match({ collection: collectionUid });
+
+	const { error, status }: DbResult<typeof query> = await query;
+
+	if (error) return new Response(JSON.stringify({ error }), { status });
+
+	console.log('Updated card in db');
+
+	const redisKey = `collection:${collectionUid}:${cardUid}`;
+	const cached = await redis.get(redisKey);
+	if (cached) {
+		redis.set(
+			redisKey,
+			JSON.stringify({ ...JSON.parse(cached), question, answer }),
+			'EX',
+			getExpiration('card')
+		);
+		setHeaders({ 'Cache-Control': 'max-age=0' });
+	}
+
+	return new Response(null, { status });
+};

@@ -60,9 +60,14 @@ export const actions: Actions = {
 			});
 
 		if (status === 422)
-			return fail(422, {
-				error: "Server couldn't process this card"
-			});
+			return fail(
+				422,
+				error
+					? { error }
+					: {
+							error: "Server couldn't process this card"
+					  }
+			);
 
 		return {
 			status,
