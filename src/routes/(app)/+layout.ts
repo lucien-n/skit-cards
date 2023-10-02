@@ -1,6 +1,5 @@
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { cfetch } from '$lib/cfetch';
-import profileStore from '$lib/stores/profile';
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit';
 
 export const load = async ({ fetch, data, depends, url: { pathname } }) => {
@@ -26,7 +25,6 @@ export const load = async ({ fetch, data, depends, url: { pathname } }) => {
 		);
 		if (data || !error) profile = data;
 	}
-	profileStore.set(profile);
 
 	return { supabase, session, profile, url: pathname };
 };
