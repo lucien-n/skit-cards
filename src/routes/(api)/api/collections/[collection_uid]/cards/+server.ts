@@ -5,6 +5,7 @@ import { redis } from '$server/redis';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
+import type { ZodError } from 'zod';
 
 const getCollectionLength = async (collectionUid: string): Promise<number> => {
 	const cachedCollection = await redis.get(`collection:${collectionUid}`);
@@ -17,7 +18,7 @@ const getCollectionLength = async (collectionUid: string): Promise<number> => {
 };
 
 const getCachedCards = async (collectionUid: string): Promise<TFlashcard[]> => {
-	const [_, redisKeys] = await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`);
+	const redisKeys = (await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`))[1];
 	if (!(redisKeys.length > 0)) return [];
 
 	const cached = await redis.mget(redisKeys);
@@ -120,7 +121,6 @@ const getCard = async (
 };
 
 export const GET: RequestHandler = async ({
-	setHeaders,
 	url: { searchParams },
 	params: { collection_uid },
 	locals: { supabase }
@@ -208,9 +208,10 @@ export const PUT: RequestHandler = async ({
 
 	try {
 		cardSchema.parse({ question, answer });
-	} catch (e: any) {
-		if (e.errors[0]?.message)
-			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+	} catch (e: unknown) {
+		const error = e as ZodError;
+		if (error.errors[0]?.message)
+			return new Response(JSON.stringify({ error: error.errors[0].message }), { status: 422 });
 	}
 
 	const query = supabase

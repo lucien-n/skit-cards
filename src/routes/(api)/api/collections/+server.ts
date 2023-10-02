@@ -1,9 +1,9 @@
 import { collectionSchema } from '$lib/schemas/collection_schema';
 import { getExpiration } from '$server/cache';
 import { redis } from '$server/redis';
-import type { SupabaseClient } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
+import type { ZodError } from 'zod';
 
 export const GET: RequestHandler = async ({
 	url: { searchParams },
@@ -74,9 +74,10 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 
 	try {
 		collectionSchema.parse({ name, isPublic: is_public });
-	} catch (e: any) {
-		if (e.errors[0]?.message)
-			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+	} catch (e: unknown) {
+		const error = e as ZodError;
+		if (error.errors[0]?.message)
+			return new Response(JSON.stringify({ error: error.errors[0].message }), { status: 422 });
 	}
 
 	const query = supabase.from('collections').insert(collection).select('uid, created_at');

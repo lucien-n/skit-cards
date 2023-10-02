@@ -8,7 +8,7 @@ const getCachedProfile = async (
 	name?: string
 ): Promise<{ profile?: TProfile; ttl?: number; status: number }> => {
 	const redisKeyPattern = `profile:${uid ? uid + '|*' : '*|' + name}`;
-	const [_, redisKeys] = await redis.scan(0, 'MATCH', redisKeyPattern);
+	const redisKeys = (await redis.scan(0, 'MATCH', redisKeyPattern))[1];
 	const cached = await redis.get(redisKeys[0]);
 
 	if (cached) {

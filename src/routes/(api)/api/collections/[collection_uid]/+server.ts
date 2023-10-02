@@ -3,6 +3,7 @@ import { getExpiration, getHeaders } from '$server/cache';
 import { checkUid } from '$server/helper';
 import { redis } from '$server/redis';
 import type { RequestHandler } from '@sveltejs/kit';
+import type { ZodError } from 'zod';
 
 export const GET: RequestHandler = async ({
 	setHeaders,
@@ -61,10 +62,11 @@ export const PUT: RequestHandler = async ({
 	const { name, isPublic } = await request.json();
 
 	try {
-		collectionSchema.parse({ name, isPublic });
-	} catch (e: any) {
-		if (e.errors[0]?.message)
-			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
+		collectionSchema.parse({ name: '12', isPublic });
+	} catch (e: unknown) {
+		const error = e as ZodError;
+		if (error.errors[0]?.message)
+			return new Response(JSON.stringify({ error: error.errors[0].message }), { status: 422 });
 	}
 
 	const query = supabase
@@ -104,7 +106,7 @@ export const DELETE: RequestHandler = async ({
 	if (error) return new Response(JSON.stringify({ error }), { status });
 
 	const redisKey = `collection:${collectionUid}`;
-	const [_, redisKeys] = await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`);
+	const redisKeys = (await redis.scan(0, 'MATCH', `collection:${collectionUid}:*`))[1];
 	redis.del([redisKey, ...redisKeys]);
 
 	return new Response(null, { status });
