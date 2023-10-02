@@ -21,7 +21,7 @@ export const GET: RequestHandler = async ({
 	}
 
 	const query = supabase
-		.from('cards_collections')
+		.from('collections')
 		.select('uid, author:profiles(name:name), name, is_public, created_at')
 		.match({ uid: collection_uid });
 
@@ -68,7 +68,7 @@ export const PUT: RequestHandler = async ({
 	}
 
 	const query = supabase
-		.from('cards_collections')
+		.from('collections')
 		.update({ name, is_public: isPublic })
 		.match({ uid: collectionUid });
 
@@ -98,7 +98,7 @@ export const DELETE: RequestHandler = async ({
 	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
 	if (collectionResponse) return collectionResponse;
 
-	const query = supabase.from('cards_collections').delete().match({ uid: collectionUid });
+	const query = supabase.from('collections').delete().match({ uid: collectionUid });
 	const { error, status }: DbResult<typeof query> = await query;
 
 	if (error) return new Response(JSON.stringify({ error }), { status });

@@ -1,6 +1,7 @@
 import { collectionSchema } from '$lib/schemas/collection_schema';
 import { getExpiration } from '$server/cache';
 import { redis } from '$server/redis';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
 
@@ -26,7 +27,7 @@ export const GET: RequestHandler = async ({
 	}
 
 	const query = supabase
-		.from('cards_collections')
+		.from('collections')
 		.select('uid, name, is_public, author:profiles(name:name), created_at')
 		.match(match)
 		.range(offset, limit + offset);
@@ -78,7 +79,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase, getSes
 			return new Response(JSON.stringify({ error: e.errors[0].message }), { status: 422 });
 	}
 
-	const query = supabase.from('cards_collections').insert(collection).select('uid, created_at');
+	const query = supabase.from('collections').insert(collection).select('uid, created_at');
 
 	const { data, error, status }: DbResult<typeof query> = await query;
 
