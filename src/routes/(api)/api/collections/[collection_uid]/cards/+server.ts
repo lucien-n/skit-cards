@@ -5,7 +5,6 @@ import { redis } from '$server/redis';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
-import type { ZodError } from 'zod';
 
 const getCollectionLength = async (collectionUid: string): Promise<number> => {
 	const cachedCollection = await redis.get(`collection:${collectionUid}`);
