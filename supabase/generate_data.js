@@ -45,7 +45,7 @@ const generate = async () => {
 	}
 
 	const supabase = new SupabaseClient(supaUrl, supaKey);
-	await supabase.from("cards_collections").delete().eq("author", author);
+	await supabase.from("collections").delete().eq("author", author);
 
 	for (const col of data.collections) {
 		const { collection, cards } = generateCollection(col);
@@ -69,7 +69,7 @@ const generate = async () => {
 };
 
 const insertCollection = async (supabase, collection) => {
-	const { error, status } = await supabase.from('cards_collections').insert(collection);
+	const { error, status } = await supabase.from('collections').insert(collection);
 
 	if (error) {
 		console.error(`[${error.code}] <${status}> while creating collection: ${error.message}`);
