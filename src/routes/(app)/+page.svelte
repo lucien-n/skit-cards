@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 	import ErrorAlert from '$components/cards/error-alert.svelte';
 	import Paginator from '$components/cards/paginator.svelte';
 	import Card from '$components/ui/card/card.svelte';
@@ -10,7 +11,6 @@
 	import type { PageData } from './$types';
 	import CollectionSkeleton from './collection-skeleton.svelte';
 	import Collection from './collection.svelte';
-	import { page } from '$app/stores';
 
 	export let data: PageData;
 
