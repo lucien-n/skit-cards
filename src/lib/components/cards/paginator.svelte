@@ -10,10 +10,11 @@
 
 	const dispatch = createEventDispatcher();
 
+	$: dispatch('change', current);
+
 	const change = (index: number) => {
 		if (!controllable) return;
 		current = index;
-		dispatch('change', index);
 	};
 
 	const next = () => {
