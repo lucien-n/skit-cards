@@ -11,7 +11,7 @@
 	const profileHrefPattern = /^\/profile\/[A-z]+$/;
 </script>
 
-<div class="sticky top-4">
+<div class="fixed w-full top-4">
 	<nav
 		class="flex items-center w-full lg:w-[80%] xl:w-[70%] 3xl:w-[60%] p-3 rounded-md shadow-md bg-background border mx-auto md:space-x-6 text-lg font-medium justify-between"
 	>
