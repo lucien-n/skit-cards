@@ -38,7 +38,7 @@
 
 	currentPage.subscribe((current) => (getCollections = filterCollections(current)));
 
-	const showCreateButton = (collections: TCollection[] | undefined) => {
+	const showCreateButton = (collections?: TCollection[] | null) => {
 		if (!collections) return false;
 		return collections.length <= collectionPerPage;
 	};
