@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="relative card p-3 w-full gap-1 h-full flex flex-col justify-center items-center text-center"
+	class="relative card p-3 lg:h-40 w-full gap-1 h-full flex flex-col justify-center items-center text-center"
 >
 	<Skeleton class={cn('h-7', getWidth())} />
 	<Skeleton class={cn('h-7', getWidth())} />
