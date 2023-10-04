@@ -51,4 +51,4 @@ export type CFetchResponse<T> = {
 	statusText: string;
 };
 
-export type CFetchPromise<T> = Promise<CFetchResponse<T>>;
+export type CFetchPromise<T> = Promise<CFetchResponse<T | null>>;
