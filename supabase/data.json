@@ -3,62 +3,62 @@
         {
             "uid": "",
             "author": "",
-            "name": "Math Flashcards",
+            "name": "Math",
             "is_public": true,
             "created_at": "2023-10-01T12:00:00Z",
             "cards": [
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 2 + 2?",
                     "answer": "4",
                     "created_at": "2023-10-01T12:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 5 x 5?",
                     "answer": "25",
                     "created_at": "2023-10-01T12:30:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is the square root of 16?",
                     "answer": "4",
                     "created_at": "2023-10-01T12:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 10 - 3?",
                     "answer": "7",
                     "created_at": "2023-10-01T13:00:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 8 / 2?",
                     "answer": "4",
                     "created_at": "2023-10-01T13:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 3 squared?",
                     "answer": "9",
                     "created_at": "2023-10-01T13:30:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 50% of 200?",
                     "answer": "100",
                     "created_at": "2023-10-01T13:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Math Flashcards",
+                    "collection": "Math",
                     "question": "What is 1/4 as a decimal?",
                     "answer": "0.25",
                     "created_at": "2023-10-01T14:00:00Z"
@@ -67,62 +67,62 @@
         },
         {
             "uid": "",
-            "name": "Science Flashcards",
+            "name": "Science",
             "is_public": false,
             "created_at": "2023-10-02T14:30:00Z",
             "cards": [
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is photosynthesis?",
                     "answer": "The process by which plants convert light into energy.",
                     "created_at": "2023-10-02T14:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "Who discovered penicillin?",
                     "answer": "Alexander Fleming",
                     "created_at": "2023-10-02T15:00:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is the Earth's largest organ?",
                     "answer": "The skin",
                     "created_at": "2023-10-02T15:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is the chemical symbol for gold?",
                     "answer": "Au",
                     "created_at": "2023-10-02T15:30:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is the process of a caterpillar changing into a butterfly called?",
                     "answer": "Metamorphosis",
                     "created_at": "2023-10-02T15:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is the boiling point of water in Fahrenheit?",
                     "answer": "212°F",
                     "created_at": "2023-10-02T16:00:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "What is the atomic number of carbon?",
                     "answer": "6",
                     "created_at": "2023-10-02T16:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "Science Flashcards",
+                    "collection": "Science",
                     "question": "Who proposed the theory of relativity?",
                     "answer": "Albert Einstein",
                     "created_at": "2023-10-02T16:30:00Z"
@@ -131,62 +131,62 @@
         },
         {
             "uid": "",
-            "name": "History Flashcards",
+            "name": "History",
             "is_public": true,
             "created_at": "2023-10-03T11:00:00Z",
             "cards": [
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "Who was the first President of the United States?",
                     "answer": "George Washington",
                     "created_at": "2023-10-03T11:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "When was the Declaration of Independence signed?",
                     "answer": "July 4, 1776",
                     "created_at": "2023-10-03T11:30:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "Who wrote 'The Communist Manifesto'?",
                     "answer": "Karl Marx and Friedrich Engels",
                     "created_at": "2023-10-03T11:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "What event marked the beginning of World War II?",
                     "answer": "The invasion of Poland in 1939",
                     "created_at": "2023-10-03T12:00:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "Who was the first woman to fly solo across the Atlantic Ocean?",
                     "answer": "Amelia Earhart",
                     "created_at": "2023-10-03T12:15:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "What was the first human-made object to reach space?",
                     "answer": "Sputnik 1",
                     "created_at": "2023-10-03T12:30:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "Who led the Civil Rights Movement in the United States?",
                     "answer": "Martin Luther King Jr.",
                     "created_at": "2023-10-03T12:45:00Z"
                 },
                 {
                     "uid": "",
-                    "collection": "History Flashcards",
+                    "collection": "History",
                     "question": "What was the outcome of the Cuban Missile Crisis?",
                     "answer": "A negotiated settlement, with the removal of missiles from Cuba",
                     "created_at": "2023-10-03T13:00:00Z"
