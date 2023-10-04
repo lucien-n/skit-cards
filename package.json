@@ -11,7 +11,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"gen:types": "supabase gen types typescript --project-id cbysxhcibneuvrjsujhi > ./src/lib/types/database-generated.types.ts",
-		"gen:data": "node ./supabase/generate_data"
+		"gen:data": "node ./supabase/generate_data",
+		"gen:fill": "node ./supabase/fill"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
