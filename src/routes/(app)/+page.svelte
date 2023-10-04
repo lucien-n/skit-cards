@@ -44,8 +44,8 @@
 	};
 </script>
 
-<section class="w-full md:w-3/4 xl:w-2/3 h-4/5">
-	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-rows-5 gap-3">
+<section class="w-full md:w-3/4 xl:w-2/3 h-full flex items-center">
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-fit w-full">
 		{#await getCollections}
 			{#each { length: collectionPerPage + 1 } as _}
 				<CollectionSkeleton />
