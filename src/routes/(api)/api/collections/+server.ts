@@ -9,8 +9,8 @@ export const GET: RequestHandler = async ({
 	url: { searchParams },
 	locals: { supabase, getSession }
 }) => {
-	const limit = 10;
-	const offset = 0;
+	const limit = parseInt(searchParams.get('limit') || '10') || 10;
+	const offset = parseInt(searchParams.get('offset') || '0') || 0;
 
 	type Mode = 'public' | 'self' | 'both' | null;
 	const which: Mode = searchParams.get('which') as Mode;
