@@ -25,16 +25,16 @@
 		resolve({} as CFetchResponse<TCollection[]>)
 	);
 
-	const filterCollections = async (currentPage: number) => {
+	const filterCollections = async (current: number) => {
 		if (!browser) return {} as CFetchResponse<TCollection[] | null>;
 		return cfetch<TCollection[]>(
-			`/api/collections?offset=${currentPage * collectionPerPage}`,
+			`/api/collections?offset=${current * collectionPerPage}`,
 			'GET',
 			fetch
 		);
 	};
 
-	currentPage.subscribe((currentPage) => (getCollections = filterCollections(currentPage)));
+	currentPage.subscribe((current) => (getCollections = filterCollections(current)));
 </script>
 
 <section class="w-full md:w-3/4 xl:w-2/3 h-4/5">
@@ -56,12 +56,20 @@
 				{/each}
 			{/if}
 			{#if session}
-				<Card class="card hover-card p-0">
+				<Card class="card hover-card p-0 h-full">
 					<a href="/new" class="w-full h-full flex items-center justify-center">
 						<Plus size={21} />
 					</a>
 				</Card>
 			{/if}
 		{/await}
+	</div>
+	<div class="w-fit mx-auto">
+		<Paginator
+			current={$currentPage}
+			size={3}
+			on:change={({ detail }) => currentPage.set(detail)}
+			showArrows
+		/>
 	</div>
 </section>

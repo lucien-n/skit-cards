@@ -25,7 +25,7 @@
 	};
 </script>
 
-<div class="relative flex items-center justify-center">
+<div class="w-fit relative flex items-center justify-center">
 	<button
 		class="absolute left-0 -translate-x-8"
 		class:hidden={!showArrows || current == 0}
@@ -33,7 +33,7 @@
 	>
 		<ChevronLeft />
 	</button>
-	<div class="w-full flex gap-2 items-center">
+	<div class="w-fit flex gap-2 items-center">
 		{#each { length: size } as _, i}
 			<button
 				class={cn(
