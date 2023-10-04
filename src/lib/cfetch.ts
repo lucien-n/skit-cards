@@ -43,3 +43,12 @@ export const cfetch = async <T>(
 };
 
 export type CFetch = typeof cfetch;
+
+export type CFetchResponse<T> = {
+	data: T;
+	error: string;
+	status: number;
+	statusText: string;
+};
+
+export type CFetchPromise<T> = Promise<CFetchResponse<T>>;
