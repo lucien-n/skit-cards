@@ -11,6 +11,7 @@
 	import type { PageData } from './$types';
 	import CollectionSkeleton from './collection-skeleton.svelte';
 	import Collection from './collection.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
@@ -21,6 +22,11 @@
 
 	let collectionPerPage: number = 11;
 	const currentPage = writable<number>(0);
+
+	onMount(() => {
+		const current: number = parseInt($page.url.searchParams.get('p') || '0');
+		currentPage.set(current);
+	});
 
 	let getCollections: CFetchPromise<TCollection[]> = new Promise((resolve) =>
 		resolve({} as CFetchResponse<TCollection[]>)
