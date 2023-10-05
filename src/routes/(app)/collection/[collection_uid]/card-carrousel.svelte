@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Paginator from '$components/cards/paginator.svelte';
 	import Flashcard from './flashcard.svelte';
 
@@ -6,12 +9,16 @@
 	export let cards: TFlashcard[];
 	export let profile: TPublicProfile | null;
 
-	let currentIndex = 0;
-	let carrouselEnd: boolean = false;
+	const paramIndex = browser ? parseInt($page.url.searchParams.get('c') || '0') : 0;
+	let currentIndex = paramIndex < cards.length ? paramIndex : cards.length - 1;
+
+	$: if (browser) {
+		$page.url.searchParams.set('c', currentIndex.toString());
+		goto($page.url.href, { replaceState: true }) ?? currentIndex;
+	}
 
 	const nextCard = () => {
 		if (currentIndex + 1 < cards.length) currentIndex += 1;
-		else carrouselEnd = true;
 	};
 
 	const getCurrentCard = () => cards[currentIndex];
