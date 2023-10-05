@@ -50,7 +50,7 @@
 	};
 </script>
 
-<section class="w-full md:w-3/4 xl:w-2/3 h-full flex items-center">
+<section class="w-full md:w-3/4 xl:w-2/3 h-full flex items-center overflow-y-auto">
 	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-fit w-full">
 		{#await getCollections}
 			{#each { length: collectionPerPage + 1 } as _}
@@ -69,14 +69,14 @@
 				{/each}
 			{/if}
 			{#if session && showCreateButton(collections)}
-				<Card class="card hover-card p-0 h-full lg:h-40">
+				<Card class="card hover-card p-0 h-28 lg:h-40">
 					<a href="/new" class="w-full h-full flex items-center justify-center">
 						<Plus size={21} />
 					</a>
 				</Card>
 			{/if}
 		{/await}
-		<div class="col-span-full mx-auto row-start-4">
+		<div class="col-span-full mx-auto row-start-auto">
 			<Paginator
 				current={$currentPage}
 				size={3}
