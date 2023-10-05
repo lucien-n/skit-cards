@@ -4,6 +4,7 @@
 	import { Edit } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import FlashcardBase from './flashcard-base.svelte';
 
 	export let flashcard: TFlashcard;
 	export let isAuthor: boolean = false;
@@ -22,7 +23,7 @@
 </script>
 
 {#key showAnswer}
-	<article class="relative w-full md:w-2/3 xl:w-1/2 h-[350px] flex flex-col items-center">
+	<FlashcardBase>
 		{#if isAuthor}
 			<a class="absolute right-3 top-3" href={url.href} on:click>
 				<Edit />
@@ -31,14 +32,14 @@
 		<button
 			in:fade={{ duration: 150 }}
 			on:click={toggleShowAnswer}
-			class="w-full h-full card hover-card flex flex-col gap-3"
+			class="flex flex-col gap-3"
 			class:border-primary={showAnswer}
 		>
-			<div class="w-full h-full flex items-center justify-center">
+			<div class="w-full h-full flex items-center justify-center text-2xl">
 				{#if !showAnswer}
-					<h1 class="text-xl">{flashcard.question}</h1>
+					<h1>{flashcard.question}</h1>
 				{:else}
-					<h1 class="text-xl">{flashcard.answer}</h1>
+					<h1>{flashcard.answer}</h1>
 				{/if}
 			</div>
 		</button>
@@ -49,5 +50,5 @@
 				>
 			</div>
 		{/if}
-	</article>
+	</FlashcardBase>
 {/key}
