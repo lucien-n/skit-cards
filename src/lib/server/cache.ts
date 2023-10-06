@@ -30,5 +30,5 @@ export const getHeaders = (route: Route) => {
 };
 
 export const getExpiration = (route: Route) => {
-	return CACHE_SETTINGS[route].max_age;
+	return DEV ? 30 : CACHE_SETTINGS[route].max_age;
 };

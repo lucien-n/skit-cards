@@ -1,18 +1,21 @@
 <script lang="ts">
-	import { collectionSchema, type CollectionSchema } from '$lib/schemas/collection_schema';
-	import type { SubmitFunction } from 'formsnap';
-	import { createEventDispatcher } from 'svelte';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import * as Form from '$components/ui/form';
 	import { enhance } from '$app/forms';
 	import { Button } from '$components/ui/button';
-	import { Trash, Trash2 } from 'lucide-svelte';
-
+	import * as Form from '$components/ui/form';
+	import * as Select from '$components/ui/select';
+	import { COLLECTION_COLORS, type CollectionColor } from '$lib/constants';
+	import { collectionSchema, type CollectionSchema } from '$lib/schemas/collection_schema';
+	import type { SubmitFunction } from 'formsnap';
+	import { Trash2 } from 'lucide-svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	export let form: SuperValidated<CollectionSchema>;
 
 	const dispatch = createEventDispatcher();
 
 	let loading: boolean = false;
+
+	let selectedColor: CollectionColor = COLLECTION_COLORS[0];
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -23,6 +26,16 @@
 	};
 
 	const cancel = () => dispatch('cancel');
+
+	onMount(() => {
+		selectedColor = COLLECTION_COLORS.filter(
+			({ value }) => value.toLowerCase() === form.data.color.toLowerCase()
+		)[0];
+	});
+
+	const onColorSelectedChange = ({ label }: { label: string } & any) => {
+		selectedColor = COLLECTION_COLORS.filter((color) => color.label === label)[0];
+	};
 </script>
 
 <Form.Root {form} schema={collectionSchema} let:config>
@@ -41,6 +54,23 @@
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
+
+		<Form.Field {config} name="color">
+			<Form.Item class="flex flex-col">
+				<Form.Label>Color</Form.Label>
+				<Form.Select onSelectedChange={onColorSelectedChange}>
+					<Select.Trigger value={selectedColor.value}>{selectedColor.label}</Select.Trigger>
+					<Select.Content>
+						{#each COLLECTION_COLORS as { label, value }}
+							<Select.Item {value} {label}>{label}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Form.Select>
+				<Form.Description />
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
+
 		<Form.Field {config} name="isPublic">
 			<Form.Item class="flex flex-col">
 				<Form.Label>Public</Form.Label>

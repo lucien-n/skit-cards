@@ -43,6 +43,7 @@ export interface Database {
       collections: {
         Row: {
           author: string
+          color: string
           created_at: string
           is_public: boolean
           name: string
@@ -51,6 +52,7 @@ export interface Database {
         }
         Insert: {
           author: string
+          color?: string
           created_at?: string
           is_public?: boolean
           name: string
@@ -59,6 +61,7 @@ export interface Database {
         }
         Update: {
           author?: string
+          color?: string
           created_at?: string
           is_public?: boolean
           name?: string

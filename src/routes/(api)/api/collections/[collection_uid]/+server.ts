@@ -23,7 +23,7 @@ export const GET: RequestHandler = async ({
 
 	const query = supabase
 		.from('collections')
-		.select('uid, author:profiles(name:name), name, is_public, created_at')
+		.select('uid, author:profiles(name:name), name, is_public, color, created_at')
 		.match({ uid: collection_uid });
 
 	const { data, error, status }: DbResult<typeof query> = await query;
@@ -59,10 +59,10 @@ export const PUT: RequestHandler = async ({
 	const { uid: collectionUid, response: collectionResponse } = checkUid(collection_uid);
 	if (collectionResponse) return collectionResponse;
 
-	const { name, isPublic } = await request.json();
+	const { name, isPublic, color } = await request.json();
 
 	try {
-		collectionSchema.parse({ name: '12', isPublic });
+		collectionSchema.parse({ name, isPublic, color });
 	} catch (e: unknown) {
 		const error = e as ZodError;
 		if (error.errors[0]?.message)
@@ -71,7 +71,7 @@ export const PUT: RequestHandler = async ({
 
 	const query = supabase
 		.from('collections')
-		.update({ name, is_public: isPublic })
+		.update({ name, is_public: isPublic, color })
 		.match({ uid: collectionUid });
 
 	const { error, status }: DbResult<typeof query> = await query;

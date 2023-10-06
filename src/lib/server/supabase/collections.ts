@@ -10,9 +10,10 @@ type GetSupabaseCollectionsOptions = {
 	not?: {
 		column: string;
 		operator: string;
-		value: any;
+		value: unknown;
 	};
 };
+
 export const getSupabaseCollections = async (
 	supabase: SupabaseClient,
 	options: GetSupabaseCollectionsOptions = {
@@ -28,7 +29,7 @@ export const getSupabaseCollections = async (
 ) => {
 	const query = supabase
 		.from('collections')
-		.select('uid, name, is_public, author:profiles(name:name), created_at')
+		.select('uid, name, is_public, author:profiles(name:name), color, created_at')
 		.match(options.match ?? {})
 		.range(options.offset ?? 0, (options.limit ?? 10) + (options.offset ?? 0));
 
@@ -49,6 +50,7 @@ export const getSupabaseCollections = async (
 	for (const collectionData of data) {
 		const collection = {
 			...collectionData,
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			author: collectionData.author.name || 'Unknown'
 		} satisfies TCollection;

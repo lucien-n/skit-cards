@@ -1,17 +1,19 @@
-import { fail, type Actions, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { collectionSchema } from '$lib/schemas/collection_schema';
-import { superValidate } from 'sveltekit-superforms/server';
 import { cfetch } from '$lib/cfetch';
+import { collectionSchema } from '$lib/schemas/collection_schema';
+import { fail, type Actions } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms/server';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url: { searchParams } }) => {
 	const form = await superValidate(collectionSchema);
 
 	const isPublic = searchParams.get('is_public') === 'true';
 	const name = searchParams.get('name');
+	const color = searchParams.get('color');
 
 	form.data.isPublic = isPublic;
 	if (name) form.data.name = name;
+	if (color) form.data.color = color;
 
 	return {
 		form
@@ -40,12 +42,16 @@ export const actions: Actions = {
 
 		const isPublic = form.data.isPublic;
 		const name = form.data.name;
+		const color = form.data.color;
 
 		const { error, status } = await cfetch<null>(
 			`/api/collections/${collection_uid}`,
 			'PUT',
 			fetch,
-			{ body: JSON.stringify({ isPublic, name }), headers: { 'Content-Type': 'application/json' } }
+			{
+				body: JSON.stringify({ isPublic, name, color }),
+				headers: { 'Content-Type': 'application/json' }
+			}
 		);
 
 		if (error)

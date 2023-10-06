@@ -3,5 +3,6 @@ export type Collection = {
 	author: string; // name
 	name: string;
 	is_public: boolean;
+	color: string;
 	created_at: string;
 };

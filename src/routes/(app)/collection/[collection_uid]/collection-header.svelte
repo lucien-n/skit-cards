@@ -11,6 +11,7 @@
 
 		settingsUrl.searchParams.set('is_public', '' + collection.is_public);
 		settingsUrl.searchParams.set('name', collection.name);
+		settingsUrl.searchParams.set('color', collection.color);
 
 		return settingsUrl.href;
 	};
