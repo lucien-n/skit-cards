@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({
 
 	const query = supabase
 		.from('collections')
-		.select('uid, name, is_public, author:profiles(name:name), created_at')
+		.select('uid, name, is_public, author:profiles(name:name), color, created_at')
 		.match(match)
 		.range(offset, limit + offset);
 
