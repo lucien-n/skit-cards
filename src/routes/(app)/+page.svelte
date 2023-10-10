@@ -17,13 +17,12 @@
 		<div>
 			{#if session}
 				<h1 class="text-xl"><strong>Yours</strong></h1>
-				<CollectionsGrid {session} baseUrl={`${$page.url.origin}/api/collections?self`} />
+				<CollectionsGrid {session} which="self" />
 			{/if}
 		</div>
 		<div>
 			<h1 class="text-xl"><strong>Latest</strong></h1>
-
-			<CollectionsGrid {session} baseUrl={`${$page.url.origin}/api/collections?latest`} />
+			<CollectionsGrid {session} which="public" />
 		</div>
 	</div>
 </section>

@@ -13,6 +13,7 @@
 	import Collection from './collection.svelte';
 
 	export let session: Session | null;
+	export let which: string;
 	export let baseUrl = `${$page.url.origin}/api/collections`;
 
 	let collectionPerPage: number = 11;
@@ -34,6 +35,7 @@
 		const url = new URL(baseUrl);
 		url.searchParams.set('limit', collectionPerPage.toString());
 		url.searchParams.set('offset', (current * collectionPerPage).toString());
+		url.searchParams.set('which', which);
 
 		return cfetch<TCollection[]>(url.href, 'GET', fetch);
 	};
