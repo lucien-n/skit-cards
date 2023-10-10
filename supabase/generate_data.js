@@ -27,6 +27,7 @@ const generateCards = (collection) => {
 const generateCollection = (collection) => {
 	collection.uid = nanoid();
 	collection.author = author;
+	collection.color = "#FF00FF";
 
 	const cards = generateCards(collection);
 
